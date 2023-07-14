@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyVersion>0.5.0.0</AssemblyVersion>
+    <PackageProjectUrl>https://github.com/charles96/Line.MessageAPI.Net</PackageProjectUrl>
+    <Title>Line.MessageAPI</Title>
+    <Authors>Charles Hong</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>C# class library for Line Messaing API </Description>
+    <PackageTags>LINE;LINE Message;Chatbot</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RootNamespace>Line</RootNamespace>
+  </PropertyGroup>
+
+</Project>
