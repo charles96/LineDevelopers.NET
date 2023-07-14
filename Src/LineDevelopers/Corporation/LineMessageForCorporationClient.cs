@@ -1,4 +1,6 @@
-﻿namespace Line.Message.Corporation
+﻿using Line.Message;
+
+namespace Line.Corporation
 {
     public class LineMessageForCorporationClient : LineHttpClient
     {
@@ -25,11 +27,18 @@
         /// The default value is false.
         /// </param>
         /// <returns></returns>
-        public async Task SendMulticastMessageUsingPhoneNumberAsync(string[] to, IList<IMessage> messages, bool? notificationDisabled = null)
+        public async Task SendMulticastMessageUsingPhoneNumberAsync(IList<string> to, IList<IMessage> messages, bool? notificationDisabled = null)
         {
+            var encTo = new List<string>();
+
+            foreach (var phoneNumber in to)
+            {
+                encTo.Add(await PhoneNumber.EncryptSHA256Async(phoneNumber).ConfigureAwait(false));    
+            }
+
             var request = new MulticastMessage()
             {
-                To = to,
+                To = encTo,
                 Messages = messages,
                 NotificationDisabled = notificationDisabled
             };
@@ -57,7 +66,7 @@
         {
             var request = new NotificationMessage()
             {
-                To = to,
+                To = await PhoneNumber.EncryptSHA256Async(to).ConfigureAwait(false),
                 Messages = messages
             };
 

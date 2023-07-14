@@ -63,11 +63,11 @@ namespace Line
             return result.Kids;
         }
 
-        public async Task RevokeChannelAccessTokenAsync(string clientId, string client_secret, string channelAccessToken)
+        public async Task RevokeChannelAccessTokenAsync(string channelId, string client_secret, string channelAccessToken)
         {
             var request = new List<KeyValuePair<string, string>> 
             {
-                new KeyValuePair<string, string>("client_id", clientId),
+                new KeyValuePair<string, string>("client_id", channelId),
                 new KeyValuePair<string, string>("client_secret", client_secret),
                 new KeyValuePair<string, string>("access_token", channelAccessToken)
             };
@@ -75,12 +75,12 @@ namespace Line
             await base.PostAsync($"oauth2/v2.1/revoke", new FormUrlEncodedContent(request)).ConfigureAwait(false);
         }
 
-        public async Task<ChannelAccessToken> IssueShortLivedChannelAccessTokenAsync(string clientId, string clientSecret)
+        public async Task<ChannelAccessToken> IssueShortLivedChannelAccessTokenAsync(string channelId, string clientSecret)
         {
             var request = new List<KeyValuePair<string, string>>()
             {
                 new KeyValuePair<string, string>("grant_type", "client_credentials"),
-                new KeyValuePair<string, string>("client_id", clientId),
+                new KeyValuePair<string, string>("client_id", channelId),
                 new KeyValuePair<string, string>("client_secret", clientSecret)
             };
 

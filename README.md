@@ -12,6 +12,7 @@ Install-Package
 # 2. Library introduction
 
 ## 2-1. LineChannelAccessTokenClient class
+* [Channel access token](https://developers.line.biz/en/reference/messaging-api/#channel-access-token)
 
 ```csharp
 using Line;
@@ -32,7 +33,7 @@ catch (LineCredentialException ex)
 }
 ```
 
-* [Channel access token](https://developers.line.biz/en/reference/messaging-api/#channel-access-token)
+
 
 |LINE Developers|Methods|Tested|
 |---|---|---|
@@ -171,10 +172,35 @@ catch (LineCredentialException ex)
 |[Test webhook endpoint](https://developers.line.biz/en/reference/messaging-api/#test-webhook-endpoint)|TestEndpointAsync|✔|
 
 ## 2-3 LineLiffClient class
-```csharp
-
-```
 * [LIFF Server API](https://developers.line.biz/en/reference/liff-server/)
+
+```csharp
+using Line;
+using Line.Liff;
+
+try
+{
+    using (var client = new LineLiffClient("access token"))
+    {
+        var liffs = await client.GetAllLiffAppsAsync();
+
+        foreach (var liff in liffs)
+        {
+            await client.DeleteLiffAppsFromChannelAsync(liff.LiffId);
+        }
+    }
+}
+catch (LineException ex)
+{
+    Console.WriteLine(ex.Message);
+
+    foreach (var detail in ex.Details ?? Enumerable.Empty<Detail>())
+    {
+        Console.WriteLine(detail.Message);
+        Console.WriteLine(detail.Property);
+    }
+}
+```
 
 |LINE Developers|Methods|Tested|
 |---|---|---|

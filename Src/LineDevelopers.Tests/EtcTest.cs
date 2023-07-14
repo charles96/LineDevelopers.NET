@@ -1,4 +1,4 @@
-﻿using Line.Message.Corporation;
+﻿using Line.Corporation;
 
 namespace LineDevelopers.Tests
 {

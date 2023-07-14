@@ -48,5 +48,14 @@ namespace LineDevelopers.Tests
                 var result = await _lineChannelAccessTokenClient.VerifyChannelAccessTokenAsync(_token.AccessToken);
             });
         }
+
+        [Test, Order(6)]
+        public void RevokeChannelAccessTokenAsyncTest()
+        {
+            DoesNotThrowAsync(async () => {
+                await _lineChannelAccessTokenClient.RevokeChannelAccessTokenAsync(CHANNEL_ID, CHANNEL_SECRET,_token.AccessToken);
+            });
+
+        }
     }
 }
