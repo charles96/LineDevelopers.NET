@@ -1,10 +1,13 @@
 ﻿[![dotnet version](https://img.shields.io/badge/.NET-7.x-blue)](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-7)
+
 # LINE Developers.Net
 이 라이브러리는 [LINE Developers](https://developers.line.biz/en/docs/)의 API를 C# 라이브러리로 개발한 것입니다.
 방대한 기능과 몇몇 기능은 유료 기반이라 모든 기능을 테스트 완료하진 못하였습니다. 
 LINE Messenger 기반 챗봇을 개발하시는 분들께 도움이 되길 바랍니다.
+
+[![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
 ```
-Install-Package LineDevelopers -Version 1.0.1
+Install-Package LineDevelopers -Version 1.0.0
 ```
 
 # 1. 사용 가이드 문서

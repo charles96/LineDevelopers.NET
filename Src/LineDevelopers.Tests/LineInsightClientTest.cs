@@ -56,7 +56,7 @@ namespace LineDevelopers.Tests
             {
                 var result = await _client.Insight.GetFriendsDemographicsAsync();
 
-                AreEqual(result.Available, false);
+                That(result.Available, Is.EqualTo(false));
             });
         }
     }

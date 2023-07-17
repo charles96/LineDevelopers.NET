@@ -10,10 +10,12 @@
     <Authors>Charles Hong</Authors>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>C# library for Line Developers API</Description>
-    <PackageTags>LINE;LINE Message;Chatbot;LINE Developers</PackageTags>
+    <PackageTags>LINE;LINE Messaging;LINE Developers;Chatbot;LIFF</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Line</RootNamespace>
     <Version>1.0.1</Version>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>

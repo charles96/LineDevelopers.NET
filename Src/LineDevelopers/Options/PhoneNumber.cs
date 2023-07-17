@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Line.Corporation
+namespace Line.Options
 {
     public class PhoneNumber
     {

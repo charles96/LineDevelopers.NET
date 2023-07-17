@@ -1,12 +1,12 @@
 ﻿using Line.Message;
 
-namespace Line.Corporation
+namespace Line.Options
 {
-    public class LineMessageForCorporationClient : LineHttpClient
+    public class LineOptionsClient : LineHttpClient
     {
         readonly string X_Line_Delivery_Tag = "X-Line-Delivery-Tag";
 
-        public LineMessageForCorporationClient(string channelAccessToken, double timeout = 100d)
+        public LineOptionsClient(string channelAccessToken, double timeout = 100d)
             : base(channelAccessToken, timeout)
         { }
 
