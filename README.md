@@ -17,23 +17,22 @@ Install-Package
 ```csharp
 using Line;
 
-try
+using (var client = new LineChannelAccessTokenClient())
 {
-    using (var client = new LineChannelAccessTokenClient())
+    try
     {
+
         var result = await client.IssueShortLivedChannelAccessTokenAsync("client id", "secret");
-        
+
         await client.VerifyShortLonglivedChannelAccessTokenAsync(result.AccessToken);
     }
-}
-catch (LineCredentialException ex)
-{
-    Console.WriteLine($"error : {ex.Message}");
-    Console.WriteLine($"error_description : {ex.Detail}");
+    catch (LineCredentialException ex)
+    {
+        Console.WriteLine($"error : {ex.Message}");
+        Console.WriteLine($"error_description : {ex.Detail}");
+    }
 }
 ```
-
-
 
 |LINE Developers|Methods|Tested|
 |---|---|---|
@@ -178,9 +177,9 @@ catch (LineCredentialException ex)
 using Line;
 using Line.Liff;
 
-try
+using (var client = new LineLiffClient("access token"))
 {
-    using (var client = new LineLiffClient("access token"))
+    try
     {
         var liffs = await client.GetAllLiffAppsAsync();
 
@@ -189,15 +188,15 @@ try
             await client.DeleteLiffAppsFromChannelAsync(liff.LiffId);
         }
     }
-}
-catch (LineException ex)
-{
-    Console.WriteLine(ex.Message);
-
-    foreach (var detail in ex.Details ?? Enumerable.Empty<Detail>())
+    catch (LineException ex)
     {
-        Console.WriteLine(detail.Message);
-        Console.WriteLine(detail.Property);
+        Console.WriteLine(ex.Message);
+
+        foreach (var detail in ex.Details ?? Enumerable.Empty<Detail>())
+        {
+            Console.WriteLine(detail.Message);
+            Console.WriteLine(detail.Property);
+        }
     }
 }
 ```

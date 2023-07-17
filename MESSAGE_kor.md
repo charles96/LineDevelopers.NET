@@ -7,25 +7,22 @@ LineMessaging API.NetÀ» ÅëÇØ ¿©·¯°¡Áö À¯ÇüÀÇ ¸Ş½ÃÁö »ı¼º ¹æ¹ı ¹× ¹ß¼Û ¹æ¹ı¿¡ ´ëÇ
 * SendBroadcastMessageAsync method¸¦ ÅëÇØ X-Line-Retry-Key¿Í ÇÔ²² ´Ü¼ø text¸Ş½ÃÁö ¹ß¼Û ¿¹½Ã)
     ```csharp
     using Line;
-    using Line.Message;
 
-    try
+    using Line.Message;using (var client = new LineMessagingClient("your access token"))
     {
-        using (var client = new LineMessagingClient("your access token"))
+        try
         {
-            var retryKey = Guid.NewGuid().ToString();
-
-            await client.Message.SendBroadcastMessageAsync(new TextMessage("hello world"), xLineRetryKey: retryKey);
+            await client.Message.SendBroadcastMessageAsync(new TextMessage("hello world"), xLineRetryKey: Guid.NewGuid().ToString());
         }
-    }
-    catch (LineException ex)
-    {
-        Console.WriteLine(ex.Message);
-
-        foreach (var detail in ex.Details ?? Enumerable.Empty<Detail>())
+        catch (LineException ex)
         {
-            Console.WriteLine(detail.Message);
-            Console.WriteLine(detail.Property);
+            Console.WriteLine(ex.Message);
+
+            foreach (var detail in ex.Details ?? Enumerable.Empty<Detail>())
+            {
+                Console.WriteLine(detail.Message);
+                Console.WriteLine(detail.Property);
+            }
         }
     }
     ```

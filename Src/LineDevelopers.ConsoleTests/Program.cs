@@ -1,31 +1,28 @@
 ﻿using System.Text.Json;
 using Line;
 using Line.Liff;
+using Line.Message;
 
 var json = File.ReadAllText(@"c:\temp\test.json");
 var config = JsonSerializer.Deserialize<TestConfig>(json);
 
 
-try
-{
-    using (var client = new LineLiffClient("access token"))
-    {
-        var liffs = await client.GetAllLiffAppsAsync();
 
-        foreach (var liff in liffs)
-        {
-            await client.DeleteLiffAppsFromChannelAsync(liff.LiffId);
-        }
+
+
+using (var client = new LineChannelAccessTokenClient())
+{
+    try
+    {
+
+        var result = await client.IssueShortLivedChannelAccessTokenAsync("client id", "secret");
+
+        await client.VerifyShortLonglivedChannelAccessTokenAsync(result.AccessToken);
     }
-}
-catch (LineException ex)
-{
-    Console.WriteLine(ex.Message);
-
-    foreach (var detail in ex.Details ?? Enumerable.Empty<Detail>())
+    catch (LineCredentialException ex)
     {
-        Console.WriteLine(detail.Message);
-        Console.WriteLine(detail.Property);
+        Console.WriteLine($"error : {ex.Message}");
+        Console.WriteLine($"error_description : {ex.Detail}");
     }
 }
 
