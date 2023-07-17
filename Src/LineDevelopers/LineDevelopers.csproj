@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>0.5.0.0</AssemblyVersion>
+    <AssemblyVersion>1.0.3</AssemblyVersion>
     <PackageProjectUrl>https://github.com/charles96/LineDevelopers.NET</PackageProjectUrl>
     <Title>LineDevelopers.NET</Title>
     <Authors>Charles Hong</Authors>
@@ -13,7 +13,7 @@
     <PackageTags>LINE;LINE Messaging;LINE Developers;Chatbot;LIFF</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Line</RootNamespace>
-    <Version>1.0.1</Version>
+    <Version>1.0.3</Version>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
