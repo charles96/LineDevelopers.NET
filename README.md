@@ -5,10 +5,11 @@
 한국에서는 지원하지 않거나 유료 기반의 기능들은 테스트를 완료하지 못했습니다. 참고하시기 바라며 LINE Messenger 기반 메시지 발송 또는 챗봇을 개발하시는 분들께 도움이 되길 바랍니다.
 
 # 1. 사용 가이드 문서
-1. Install from [![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
-```powershell
-Install-Package LineDevelopers 
-```
+1. Nuget을 통한 설치
+* [![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
+    ```powershell
+    Install-Package LineDevelopers 
+    ```
 2. [메시지 생성 및 발송 가이드](https://github.com/charles96/LineDevelopers.Net/blob/master/MESSAGE_kor.md)
 3. [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_kor.md)
 
@@ -45,7 +46,6 @@ using (var client = new LineChannelAccessTokenClient())
 |[Issue short-lived channel access token](https://developers.line.biz/en/reference/messaging-api/#issue-shortlived-channel-access-token)|IssueShortLivedChannelAccessTokenAsync|✔|
 |[Verify the validity of short-lived and long-lived channel access tokens](https://developers.line.biz/en/reference/messaging-api/#verfiy-channel-access-token)|VerifyShortLonglivedChannelAccessTokenAsync|✔|
 |[Revoke short-lived or long-lived channel access token](https://developers.line.biz/en/reference/messaging-api/#revoke-longlived-or-shortlived-channel-access-token)|RevokeShortLongLivedChannelAccessTokenAsync|✔|
-
 
 ## 2-2. LineMessagingClient class
 각 기능 별로 개별 class들이 아래와 같이 존재합니다. 하지만 LineMessagingClient를 통해 

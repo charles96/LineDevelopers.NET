@@ -4,9 +4,9 @@ LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는
 # quick start
 ## 1. open api project
 1. [line webhook sample](https://github.com/charles96/LineDevelopers.Net/tree/master/Src/LineDevelopers.Webhook.Sample) project 다운로드
-2. Visual Studio → project open
-2. LineController.cs 수정
-    * channel access token 입력
+2. Visual Studio → open project
+2. LineController.cs
+    * channel access token 수정
     ```csharp
     public LineController()
     {
@@ -14,9 +14,8 @@ LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는
     }
     ```
 3. Visual Studio → F5를 통해 project 실행 
-4. localhost 확인
-아래와 같이 주소 및 endpoint 경로를 확인한다.  
-  * ex) https://localhost:7250
+4. 아래와 같이 host 및 callback 경로를 기억한다.  
+  * ex) host : https://localhost:7250, callback url: /line/callback
   ![image](https://github.com/charles96/LineDevelopers.Net/blob/master/Assets/swagger.png?raw=true)
 
 ## 2. ngrok 설치 및 세팅
@@ -39,10 +38,10 @@ LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는
 3. Webhook URL → Edit → ngrok 생성 host + callback url 입력 → Update → Verifiy → Success
 
 ## 4. LINE Messanger
-해당 채널에서 메시지를 보내면 아래와 같이 응답이 올 것 입니다.
+해당 채널에서 메시지를 보내면 응답이 올 것 입니다.
 
 # sample source 설명
-|Webhook Event Objects|Method|
+|LINE Developers|Methods|
 |---|---|
 |[Message event](https://developers.line.biz/en/reference/messaging-api/#message-event)|OnMessageEventAsync|
 |[Unsend event](https://developers.line.biz/en/reference/messaging-api/#unsend-event)|OnUnSendEventAsync|
@@ -62,7 +61,7 @@ LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는
 
 # example
 ## ping pong message
-[Message event](https://developers.line.biz/en/reference/messaging-api/#message-event)의 message property 핸들링 예제이며, 유저가 입력한 text메시지 또는 sticker메시지를 따라합니다.
+[Message event](https://developers.line.biz/en/reference/messaging-api/#message-event)의 message property 핸들링 예제이며, 유저가 입력한 text메시지 또는 sticker메시지를 따라 응답합니다.
 
 ```csharp
 protected override async Task OnMessageEventAsync(MessageEventObject messageEventObject)
