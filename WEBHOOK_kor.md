@@ -16,8 +16,8 @@ LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는
       _client = new LineMessagingClient("your channel access token"); //수정
   }
   ```
-3. Visual Studio → F5를 통해 project 실행 
-4. 아래와 같이 host 및 callback 경로를 기억한다.  
+4. Visual Studio → F5를 통해 project 실행 
+5. 아래와 같이 host 및 callback 경로를 기억한다.  
   * ex) host : https://localhost:7250, callback url: /line/callback
   ![image](https://github.com/charles96/LineDevelopers.Net/blob/master/Assets/swagger.png?raw=true)
 
