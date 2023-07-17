@@ -1,0 +1,28 @@
+name: .NET Core
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*.*.*' # v1.0.0 과같이 태깅을 달면 배포가 작동됩니다.
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:	  
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      id: vars
+      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.306
+    - name: Install dependencies
+      run: dotnet restore Src/LineDevelopers/LineDevelopers.csproj
+    - name: Build
+      run: dotnet build Src/LineDevelopers/LineDevelopers.csproj --configuration Release --no-restore    
+    - name: Push Nuget registry
+      run: dotnet nuget push Src/LineDevelopers/bin/Release/LineDevelopers.$(git describe --tags | sed s/[v]//g).nupkg -k ${{ secrets.NUGET_PUBLIC }} --source "https://api.nuget.org/v3/index.json"

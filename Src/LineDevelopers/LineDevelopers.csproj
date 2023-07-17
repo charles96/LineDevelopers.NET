@@ -13,6 +13,7 @@
     <PackageTags>LINE;LINE Message;Chatbot</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Line</RootNamespace>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>
