@@ -10,10 +10,8 @@ Install-Package LineDevelopers
 ```
 
 # 1. 사용 가이드 문서
-
-1-1. [메시지 생성 및 발송 가이드](https://github.com/charles96/LineDevelopers.Net/blob/master/MESSAGE_kor.md)  
-
-1-2. [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_kor.md)
+* [메시지 생성 및 발송 가이드](https://github.com/charles96/LineDevelopers.Net/blob/master/MESSAGE_kor.md)  
+* [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_kor.md)
 
 # 2. 라이브러리 소개
 ## 2-1. LineChannelAccessTokenClient class
