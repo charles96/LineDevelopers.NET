@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using Line;
-using Line.Liff;
 using Line.Message;
 
 var json = File.ReadAllText(@"c:\temp\test.json");

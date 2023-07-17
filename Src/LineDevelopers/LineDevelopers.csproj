@@ -13,10 +13,7 @@
     <PackageTags>LINE;LINE Message;Chatbot;LINE Developers</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Line</RootNamespace>
-    <Version>0.5.0</Version>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
