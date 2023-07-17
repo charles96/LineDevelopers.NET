@@ -1,19 +1,8 @@
 ﻿namespace LineDevelopers.Tests
 {
     [TestFixture]
-    internal class LineUserClientTest : BaseTest
+    public class LineUserClientTest : BaseTest
     {
-        [Test]
-        public void GetBotInformationAsyncTest()
-        {
-            DoesNotThrowAsync(async () =>
-            {
-                var result = await base._client.GetBotInformationAsync();
-
-                AreEqual(result.DisplayName, "Atom");
-            });
-        }
-
         [Test]
         public void GetUserProfileAsyncTest()
         {

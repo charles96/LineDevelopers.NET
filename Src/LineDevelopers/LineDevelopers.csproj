@@ -5,14 +5,29 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyVersion>0.5.0.0</AssemblyVersion>
-    <PackageProjectUrl>https://github.com/charles96/Line.MessageAPI.Net</PackageProjectUrl>
-    <Title>Line.MessageAPI</Title>
+    <PackageProjectUrl>https://github.com/charles96/LineDevelopers.NET</PackageProjectUrl>
+    <Title>LineDevelopers.NET</Title>
     <Authors>Charles Hong</Authors>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Description>C# class library for Line Messaing API </Description>
-    <PackageTags>LINE;LINE Message;Chatbot</PackageTags>
+    <Description>C# library for Line Developers API</Description>
+    <PackageTags>LINE;LINE Message;Chatbot;LINE Developers</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Line</RootNamespace>
+    <Version>0.5.0</Version>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

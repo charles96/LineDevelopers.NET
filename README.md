@@ -4,12 +4,13 @@
 방대한 기능과 몇몇 기능은 유료 기반이라 모든 기능을 테스트 완료하진 못하였습니다. 
 LINE Messenger 기반 챗봇을 개발하시는 분들께 도움이 되길 바랍니다.
 ```
-Install-Package
+Install-Package LineDevelopers -Version 1.0.1
 ```
+
 # 1. 사용 가이드 문서
 1. [메시지 생성 및 발송 가이드](https://github.com/charles96/LineDevelopers.Net/blob/master/MESSAGE_kor.md)
 2. [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_kor.md)
-# 2. Library introduction
+# 2. 라이브러리 소개
 
 ## 2-1. LineChannelAccessTokenClient class
 * [Channel access token](https://developers.line.biz/en/reference/messaging-api/#channel-access-token)
@@ -21,7 +22,6 @@ using (var client = new LineChannelAccessTokenClient())
 {
     try
     {
-
         var result = await client.IssueShortLivedChannelAccessTokenAsync("client id", "secret");
 
         await client.VerifyShortLonglivedChannelAccessTokenAsync(result.AccessToken);

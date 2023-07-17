@@ -1,5 +1,5 @@
 ﻿# webhook api quick start
-LineMessaging API.Net 라이브러리를 활용하여 개발을 위해 webhook을 세팅하는 방법에 대해 정리
+LINE Develpers.NET library를 이용하여 간단하게 webhook을 테스트 하는 방법에 대해 소개합니다.
 
 # quick start
 ## 1. open api project

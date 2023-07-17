@@ -10,14 +10,19 @@ var config = JsonSerializer.Deserialize<TestConfig>(json);
 
 
 
-using (var client = new LineChannelAccessTokenClient())
+using (var client = new LineMessagingClient(config.ChannelAccessToken))
 {
     try
     {
 
-        var result = await client.IssueShortLivedChannelAccessTokenAsync("client id", "secret");
+        var result = await client.Bot.GetBotInformationAsync();
 
-        await client.VerifyShortLonglivedChannelAccessTokenAsync(result.AccessToken);
+        Console.WriteLine(result.PremiumId);
+        Console.WriteLine(result.PictureUrl);
+        Console.WriteLine($"User ID : {result.UserId}");
+        Console.WriteLine($"ChatMode : {result.ChatMode}");
+        Console.WriteLine($"MarkAsReadMode : {result.MarkAsReadMode}");
+
     }
     catch (LineCredentialException ex)
     {

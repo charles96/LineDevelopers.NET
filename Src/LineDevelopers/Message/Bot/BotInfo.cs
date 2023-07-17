@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Line.Message.Bot
+namespace Line.Message
 {
     /// <summary>
     /// Gets a bot's basic information.
     /// </summary>
-    public class BotInfo
+    public class BotInformation
     {
         /// <summary>
         /// Bot's user ID
@@ -24,7 +24,7 @@ namespace Line.Message.Bot
         /// </summary>
         [JsonPropertyName("premiumId")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string PremiumId { get; set; }
+        public string? PremiumId { get; set; }
 
         /// <summary>
         /// Bot's display name
@@ -37,7 +37,7 @@ namespace Line.Message.Bot
         /// </summary>
         [JsonPropertyName("pictureUrl")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string PictureUrl { get; set; }
+        public string? PictureUrl { get; set; }
 
         /// <summary>
         /// Chat settings set in the LINE Official Account Manager (opens new window). One of:
@@ -45,7 +45,7 @@ namespace Line.Message.Bot
         /// bot: Chat is set to "Off".
         /// </summary>
         [JsonPropertyName("chatMode")]
-        public string ChatMode { get; set; }
+        public ChatType ChatMode { get; set; }
 
         /// <summary>
         /// Automatic read setting for messages. If the chat is set to "Off", auto is returned. If the chat is set to "On", manual is returned.
@@ -53,6 +53,6 @@ namespace Line.Message.Bot
         /// manual: Auto read setting is disabled.
         /// </summary>
         [JsonPropertyName("markAsReadMode")]
-        public string MarkAsReadMode { get; set; }
+        public ReadType MarkAsReadMode { get; set; }
     }
 }

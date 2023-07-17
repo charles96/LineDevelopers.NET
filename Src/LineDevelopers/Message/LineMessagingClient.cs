@@ -10,6 +10,7 @@
         IUserClient _userClient;
         IAccountLinkClient _accountLinkClient;
         IWebHookSettingClient _webhookSettingClient;
+        IBotClient _botClient;
 
         public LineMessagingClient(string channelAccessToken, double timeout = 100d)
             : base(channelAccessToken, timeout)
@@ -60,10 +61,8 @@
         public IWebHookSettingClient WebhookSetting => _webhookSettingClient ??= new LineWebhookSettingClient(base._httpClient, base._jsonSerializerOptions);
 
         /// <summary>
-        /// Gets a bot's basic information.
+        /// You can obtain basic information on the LINE Official Account's bots.
         /// </summary>
-        /// <returns></returns>
-        public async Task<BotInformation> GetBotInformationAsync()
-            => await base.GetAsync<BotInformation>($"v2/bot/info").ConfigureAwait(false);
+        public IBotClient Bot => _botClient ??= new LineBotClient(base._httpClient, base._jsonSerializerOptions);
     }
 }
