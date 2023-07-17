@@ -3,27 +3,28 @@ LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는
 
 # quick start
 ## 1. [LINE Developers](https://developers.line.biz/console/) 이동
-    * Messaging API → Channel access token (long-lived)을 발급 및 복사합니다.
+* Messaging API → Channel access token (long-lived)을 발급 및 복사합니다.
+
 ## 2. open api project
-    1. [line webhook sample](https://github.com/charles96/LineDevelopers.Net/tree/master/Src/LineDevelopers.Webhook.Sample) project 다운로드
-    2. Visual Studio → open project
-    3. LineController.cs
-    * channel access token 수정
-    ```csharp
-    public LineController()
-    {
-        _client = new LineMessagingClient("your channel access token"); //수정
-    }
-    ```
-    4. Visual Studio → F5를 통해 project 실행 
-    5. 아래와 같이 host 및 callback 경로를 기억한다.  
-        * ex) host : https://localhost:7250, callback url: /line/callback
-        ![image](https://github.com/charles96/LineDevelopers.Net/blob/master/Assets/swagger.png?raw=true)
+1. [line webhook sample](https://github.com/charles96/LineDevelopers.Net/tree/master/Src/LineDevelopers.Webhook.Sample) project 다운로드
+2. Visual Studio → open project
+3. LineController.cs
+  * channel access token 수정
+  ```csharp
+  public LineController()
+  {
+      _client = new LineMessagingClient("your channel access token"); //수정
+  }
+  ```
+3. Visual Studio → F5를 통해 project 실행 
+4. 아래와 같이 host 및 callback 경로를 기억한다.  
+  * ex) host : https://localhost:7250, callback url: /line/callback
+  ![image](https://github.com/charles96/LineDevelopers.Net/blob/master/Assets/swagger.png?raw=true)
 
 ## 3. ngrok 설치 및 세팅
 자신의 local에 생성한 api를 LINE Messanger 서버에서 직접 호출하기 위해 아래와 같은 절차가 필요하다.
 ### 3-1. 자신의 pc환경에 맞는 ngrok을 다운로드
-    * [ngrok download](https://ngrok.com/download)
+  * [ngrok download](https://ngrok.com/download)
 ### 3-2. ngrok 실행
 1. console에서 아래와 같이 자신의 localhost주소를 넣고 실행
     ```console
