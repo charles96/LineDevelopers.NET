@@ -7,8 +7,9 @@ LineMessaging API.NetÀ» ÅëÇØ ¿©·¯°¡Áö À¯ÇüÀÇ ¸Ş½ÃÁö »ı¼º ¹æ¹ı ¹× ¹ß¼Û ¹æ¹ı¿¡ ´ëÇ
 * SendBroadcastMessageAsync method¸¦ ÅëÇØ X-Line-Retry-Key¿Í ÇÔ²² ´Ü¼ø text¸Ş½ÃÁö ¹ß¼Û ¿¹½Ã)
     ```csharp
     using Line;
+    using Line.Message;
 
-    using Line.Message;using (var client = new LineMessagingClient("your access token"))
+    using (var client = new LineMessagingClient("your access token"))
     {
         try
         {
