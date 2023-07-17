@@ -1,5 +1,5 @@
 ﻿# webhook api quick start
-LINE Develpers.NET library를 이용하여 간단하게 webhook을 테스트 하는 방법에 대해 소개합니다.
+LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는 방법에 대해 소개합니다.
 
 # quick start
 ## 1. open api project

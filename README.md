@@ -1,18 +1,17 @@
 ﻿[![dotnet version](https://img.shields.io/badge/.NET-7.x-blue)](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-7)
 
 # LINE Developers.Net
-이 라이브러리는 [LINE Developers](https://developers.line.biz/en/docs/)의 API를 C# 라이브러리로 개발한 것입니다.
-방대한 기능과 몇몇 기능은 유료 기반이라 모든 기능을 테스트 완료하진 못하였습니다. 
-LINE Messenger 기반 챗봇을 개발하시는 분들께 도움이 되길 바랍니다.
-
-[![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
-```
-Install-Package LineDevelopers -Version 1.0.0
-```
+이 라이브러리는 [LINE Developers](https://developers.line.biz/en/docs/)의 API를 C# 라이브러리로 개발한 것이며, LINE Developers와 관련없는 비공식 라이브러리 임을 밝힙니다.
+한국에서는 지원하지 않거나 유료 기반의 기능들은 테스트를 완료하지 못했습니다. 참고하시기 바라며 LINE Messenger 기반 메시지 발송 또는 챗봇을 개발하시는 분들께 도움이 되길 바랍니다.
 
 # 1. 사용 가이드 문서
-1. [메시지 생성 및 발송 가이드](https://github.com/charles96/LineDevelopers.Net/blob/master/MESSAGE_kor.md)
-2. [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_kor.md)
+1. Install from [![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
+```powershell
+Install-Package LineDevelopers 
+```
+2. [메시지 생성 및 발송 가이드](https://github.com/charles96/LineDevelopers.Net/blob/master/MESSAGE_kor.md)
+3. [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_kor.md)
+
 # 2. 라이브러리 소개
 
 ## 2-1. LineChannelAccessTokenClient class
@@ -172,6 +171,13 @@ using (var client = new LineChannelAccessTokenClient())
 |[Set webhook endpoint URL](https://developers.line.biz/en/reference/messaging-api/#set-webhook-endpoint-url)|SetEndpointUrlAsync|✔|
 |[Get webhook endpoint information](https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information)|GetEndpointInformationAsync|✔|
 |[Test webhook endpoint](https://developers.line.biz/en/reference/messaging-api/#test-webhook-endpoint)|TestEndpointAsync|✔|
+
+## 2-2-9. LineBotClient class
+* [Bot](https://developers.line.biz/en/reference/messaging-api/#bot)
+
+|LINE Developers|Methods|Tested|
+|---|---|---|
+|[Get bot info](https://developers.line.biz/en/reference/messaging-api/#get-bot-info)|GetBotInformationAsync|✔|
 
 ## 2-3 LineLiffClient class
 * [LIFF Server API](https://developers.line.biz/en/reference/liff-server/)
