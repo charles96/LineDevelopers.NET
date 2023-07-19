@@ -1,5 +1,6 @@
 ﻿[![dotnet version](https://img.shields.io/badge/.NET-7.x-blue)](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-7)
 [![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
+[![Nuget downloads](https://img.shields.io/nuget/dt/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
 
 # LINE Developers.Net
 이 라이브러리는 [LINE Developers](https://developers.line.biz/en/docs/)의 API를 C# 라이브러리로 개발한 것이며, LINE Developers와 관련없는 비공식 라이브러리 임을 밝힙니다.
