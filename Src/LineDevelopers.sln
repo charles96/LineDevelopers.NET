@@ -12,14 +12,17 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E166419-83EF-4F6B-BE8A-7C39ED4E53E6}"
 	ProjectSection(SolutionItems) = preProject
 		..\LICENSE.md = ..\LICENSE.md
+		..\MESSAGE_eng.md = ..\MESSAGE_eng.md
 		..\MESSAGE_kor.md = ..\MESSAGE_kor.md
 		..\README.md = ..\README.md
+		..\README_kor.md = ..\README_kor.md
+		..\WEBHOOK_eng.md = ..\WEBHOOK_eng.md
 		..\WEBHOOK_kor.md = ..\WEBHOOK_kor.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LineDevelopers.Webhook.Tests", "LineDevelopers.Webhook.Tests\LineDevelopers.Webhook.Tests.csproj", "{E2A17ED8-5CCD-4A4A-81D2-18A7CB100181}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineDevelopers.Webhook.Sample", "LineDevelopers.Webhook.Sample\LineDevelopers.Webhook.Sample.csproj", "{EC2349F9-7612-4CA6-A14C-8526B00304D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LineDevelopers.Webhook.Sample", "LineDevelopers.Webhook.Sample\LineDevelopers.Webhook.Sample.csproj", "{EC2349F9-7612-4CA6-A14C-8526B00304D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

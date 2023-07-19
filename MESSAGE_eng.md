@@ -1,10 +1,9 @@
-# ¸Ş½ÃÁö ¹ß¼Û
-LineMessaging API.NetÀ» ÅëÇØ ¿©·¯°¡Áö À¯ÇüÀÇ ¸Ş½ÃÁö »ı¼º ¹æ¹ı ¹× ¹ß¼Û ¹æ¹ı¿¡ ´ëÇØ ¾Æ·¡¿Í °°ÀÌ Á¤¸®ÇÏ¿´À¸´Ï Âü°íÇÏ½Ã±â ¹Ù¶ø´Ï´Ù.
-# Âü°í ÄÚµå
-  * [À¯Çüº° ¸Ş½ÃÁö ¹ß¼Û TestCode](https://github.com/charles96/LineDevelopers.Net/blob/master/Src/LineDevelopers.Tests/LineMessageClientTest.cs)
-  * [Flex ¸Ş½ÃÁö ¹ß¼Û Test Code](https://github.com/charles96/LineDevelopers.Net/blob/master/Src/LineDevelopers.Tests/LineFlexMessageTest.cs)
-# ¸Ş½ÃÁö ¹ß¼Û sample
-* SendBroadcastMessageAsync method¸¦ ÅëÇØ X-Line-Retry-Key¿Í ÇÔ²² ´Ü¼ø text¸Ş½ÃÁö ¹ß¼Û ¿¹½Ã)
+ï»¿# how to create / send a message
+# test codes
+  * [test codes to send a message of each types](https://github.com/charles96/LineDevelopers.Net/blob/master/Src/LineDevelopers.Tests/LineMessageClientTest.cs)
+  * [test codes to send flex message](https://github.com/charles96/LineDevelopers.Net/blob/master/Src/LineDevelopers.Tests/LineFlexMessageTest.cs)
+# send message sample
+* example to send a simple text message with a 'X-Line-Retry-Key' header via SendBroadcastMessageAsync method
     ```csharp
     using Line;
     using Line.Message;
@@ -27,7 +26,7 @@ LineMessaging API.NetÀ» ÅëÇØ ¿©·¯°¡Áö À¯ÇüÀÇ ¸Ş½ÃÁö »ı¼º ¹æ¹ı ¹× ¹ß¼Û ¹æ¹ı¿¡ ´ëÇ
         }
     }
     ```
-* SendBroadcastMessageAsync method¸¦ ÅëÇÑ ´ÙÁß À¯Çü ¸Ş½ÃÁö ¹ß¼Û ¿¹½Ã)
+* send multiple message types all at once via SendBroadcastMessageAsync 
     ```csharp
     var messages = new List<IMessage>()
     {
@@ -87,7 +86,7 @@ LineMessaging API.NetÀ» ÅëÇØ ¿©·¯°¡Áö À¯ÇüÀÇ ¸Ş½ÃÁö »ı¼º ¹æ¹ı ¹× ¹ß¼Û ¹æ¹ı¿¡ ´ëÇ
     
     await client.Message.SendBroadcastMessageAsync(messages);
     ```
-# ¸Ş½ÃÁö ¹ß¼Û methods
+# methods for send message
 ```csharp
 Task SendReplyMessageAsync(string replyToken, IMessage message, bool? notificationDisabled = null);
 Task SendReplyMessageAsync(string replyToken, IList<IMessage> messages, bool? notificationDisabled = null);
@@ -100,8 +99,9 @@ Task SendNarrowcastMessageAsync(IMessage message, IRecipientObject? recipient = 
 Task SendBroadcastMessageAsync(IList<IMessage> messages, bool? notificationDisabled = null, string? xLineRetryKey = null);
 Task SendBroadcastMessageAsync(IMessage message, bool? notificationDisabled = null, string? xLineRetryKey = null);
 ```
-# ¸Ş½ÃÁö À¯Çü ¹× »ı¼º ¹æ¹ı
-[quick reply buttons](https://developers.line.biz/en/docs/messaging-api/using-quick-reply/)´Â ¾Æ·¡ ¸ğµç ¸Ş½ÃÁö¿¡ Æ÷ÇÔ µÉ ¼ö ÀÖ½À´Ï´Ù.
+# how to make a message via each type
+LINE has varient messge types so, you can refer to the below sample cases.
+all the message types can include [quick reply buttons](https://developers.line.biz/en/docs/messaging-api/using-quick-reply/) and it'sÂ anÂ optional.
 
 ## 1. [Text message](https://developers.line.biz/en/reference/messaging-api/#text-message)
 ![image](https://github.com/charles96/LineDevelopers.Net/blob/master/Assets/text%20message.JPEG?raw=true)
@@ -113,8 +113,8 @@ var message = new TextMessage()
 ```
 ## 2. [Sticker message](https://developers.line.biz/en/reference/messaging-api/#sticker-message)
 ![image](https://github.com/charles96/LineDevelopers.Net/blob/master/Assets/sticker%20message.JPEG?raw=true)
+* [List of available stickers](https://developers.line.biz/en/docs/messaging-api/sticker-list/)
 
-PackageId / StickerId´Â [List of available stickers](https://developers.line.biz/en/docs/messaging-api/sticker-list/)¸¦ ÂüÁ¶ÇÏ¼¼¿ä
 ```csharp
 var message = new StickerMessage()
 { 

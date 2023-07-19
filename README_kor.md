@@ -1,22 +1,19 @@
 ﻿[![dotnet version](https://img.shields.io/badge/.NET-7.x-blue)](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-7)
 [![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
-* [세종대왕](https://github.com/charles96/LineDevelopers.Net/blob/master/README_kor.md)
-# LINE Developers.Net
-This C# Library is implemented of the [LINE Developers APIs](https://developers.line.biz/en/docs/). and This is an unofficial LINE Developers library. 
-There are so many features in LINE Developers APIs. 
-However couldn't test such of features which are not offer in KOREA and some of pay features.
-but It'll works well. I hope it's helpful to develop message send and chatbot via LINE.
 
+# LINE Developers.Net
+이 라이브러리는 [LINE Developers](https://developers.line.biz/en/docs/)의 API를 C# 라이브러리로 개발한 것이며, LINE Developers와 관련없는 비공식 라이브러리 임을 밝힙니다.
+한국에서는 지원하지 않거나 유료 기반의 기능들은 테스트를 완료하지 못했습니다. 참고하시기 바라며 LINE Messenger 기반 메시지 발송 또는 챗봇을 개발하시는 분들께 도움이 되길 바랍니다.
 * install from nuget
 ```powershell
 Install-Package LineDevelopers 
 ```
 
-# 1. Getting started
-* [how to create / send a message](https://github.com/charles96/LineDevelopers.Net/blob/master/MESSAGE_eng.md)  
-* [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_eng.md)
+# 1. 사용 가이드 문서
+* [메시지 생성 및 발송 가이드](https://github.com/charles96/LineDevelopers.Net/blob/master/MESSAGE_kor.md)  
+* [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_kor.md)
 
-# 2. Library introduction
+# 2. 라이브러리 소개
 ## 2-1. LineChannelAccessTokenClient class
 * [Channel access token](https://developers.line.biz/en/reference/messaging-api/#channel-access-token)
 
@@ -50,11 +47,10 @@ using (var client = new LineChannelAccessTokenClient())
 |[Revoke short-lived or long-lived channel access token](https://developers.line.biz/en/reference/messaging-api/#revoke-longlived-or-shortlived-channel-access-token)|RevokeShortLongLivedChannelAccessTokenAsync|✔|
 
 ## 2-2. LineMessagingClient class
-There are exists each class by unit of feature. 
-for instance, it offer same features both a LineMessaingClient.Insight and a LineInsightClient class.
-but I recommend that you should use a LineMessagingClient class instead of each class.
+각 기능 별로 개별 class들이 아래와 같이 존재합니다. 하지만 LineMessagingClient를 통해 
+아래의 모든 기능들을 사용 할 수 있으며 LineMessagingClient를 통해 구현하는 것을 권장합니다.
 
-* example)
+* 예시)
     ```csharp
     using Line.Message;
 
@@ -220,7 +216,7 @@ using (var client = new LineLiffClient("access token"))
 |[Get all LIFF apps](https://developers.line.biz/en/reference/liff-server/#get-all-liff-apps)|GetAllLiffAppsAsync|✔|
 |[Delete LIFF app from a channel](https://developers.line.biz/en/reference/liff-server/#delete-liff-app)|DeleteLiffAppsFromChannelAsync|✔|
 
-# 3. reference doc
+# 3. 참고 문서
 * [Messaging API reference](https://developers.line.biz/en/reference/messaging-api/)
 * [How to serialize properties of derived classes with System.Text.Json](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism?pivots=dotnet-7-0) 
 * [System.Text.Json:How to specify a custom name for an enum value](https://itecnote.com/tecnote/c-system-text-json-how-to-specify-a-custom-name-for-an-enum-value/) 
