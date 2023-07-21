@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Line;
+using Line.Login;
 using Line.Message;
 
 var json = File.ReadAllText(@"c:\temp\test.json");
@@ -8,13 +9,19 @@ var config = JsonSerializer.Deserialize<TestConfig>(json);
 
 
 
+using (LineLoginClient client = new LineLoginClient())
+{
+    var issued = await client.OAuth2dot1.IssueAccessTokenAsync("code", "redirectUrl", "clientId", "secret");
+    var profile = await client.GetUserProfileAsync(issued.AccessToken);
+}
 
-using (var client = new LineMessagingClient(config.ChannelAccessToken))
+
+using (var client2 = new LineMessagingClient(config.ChannelAccessToken))
 {
     try
     {
 
-        var result = await client.Bot.GetBotInformationAsync();
+        var result = await client2.Bot.GetBotInformationAsync();
 
         Console.WriteLine(result.PremiumId);
         Console.WriteLine(result.PictureUrl);

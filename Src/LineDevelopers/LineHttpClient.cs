@@ -56,21 +56,11 @@ namespace Line
             using (var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false))
             {
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
-#if DEBUG
-                await File.WriteAllTextAsync(@"c:\temp\PostAsJsonAsync33.txt", await response.Content?.ReadAsStringAsync());
-#endif
+
                 result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
             }
 
             return result;
-        }
-
-        protected async Task<Stream> GetStreamAsync(string endpoint)
-        {
-            var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
-            await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
-
-            return await response.Content?.ReadAsStreamAsync();
         }
 
         protected async Task<TResult> GetAsync<TResult>(string endpoint, HttpContent httpContent)
@@ -83,11 +73,39 @@ namespace Line
 
                 using (var response = await _httpClient.SendAsync(request).ConfigureAwait(false))
                 {
+                    await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
+
                     result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
                 }
             }
 
             return result;
+        }
+        protected async Task<TResult> GetAsync<TResult>(string endpoint, string? headerName = null, string? headerValue = null)
+        {
+            TResult result;
+
+            using (var body = new HttpRequestMessage(HttpMethod.Get, endpoint))
+            {
+                if (!String.IsNullOrWhiteSpace(headerName)) body.Headers.Add(headerName, headerValue);
+
+                using (var response = await _httpClient.SendAsync(body).ConfigureAwait(false))
+                {
+                    await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
+
+                    result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
+                }
+            }
+
+            return result;
+        }
+
+        protected async Task<Stream> GetStreamAsync(string endpoint)
+        {
+            var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
+            await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
+
+            return await response.Content?.ReadAsStreamAsync();
         }
 
         protected async Task PostAsync(string endpoint, StreamContent streamContent, MediaType mediaType)
@@ -120,8 +138,11 @@ namespace Line
             using (var response = await _httpClient.PostAsync(endpoint, request).ConfigureAwait(false))
             {
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
+#if DEBUG
+                await File.WriteAllTextAsync(@"c:\temp\aaa.txt", await response.Content?.ReadAsStringAsync());
+#endif
 
-                result = await response.Content?.ReadFromJsonAsync<TResult>();
+                result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
             }
 
             return result;
@@ -167,7 +188,7 @@ namespace Line
             {
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
 
-                result = await response.Content?.ReadFromJsonAsync<TResult>();
+                result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
             }
 
             return result;
