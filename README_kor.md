@@ -217,6 +217,30 @@ using (var client = new LineLiffClient("access token"))
 |[Get all LIFF apps](https://developers.line.biz/en/reference/liff-server/#get-all-liff-apps)|GetAllLiffAppsAsync|✔|
 |[Delete LIFF app from a channel](https://developers.line.biz/en/reference/liff-server/#delete-liff-app)|DeleteLiffAppsFromChannelAsync|✔|
 
+## 2-4 LineLoginClient
+* [LINE Login v2.1](https://developers.line.biz/en/reference/line-login/)
+
+```csharp
+using Line.Login;
+
+using (LineLoginClient client = new LineLoginClient())
+{
+    var issued = await client.OAuth2dot1.IssueAccessTokenAsync("code", "redirectUrl", "clientId", "secret");
+    var profile = await client.GetUserProfileAsync(issued.AccessToken);
+}
+```
+
+|LINE Developers|Methods|Tested|
+|---|---|---|
+|[Issue access token](https://developers.line.biz/en/reference/line-login/#issue-access-token)|OAuth2dot1.IssueAccessTokenAsync|✔|
+|[Verify access token validity](https://developers.line.biz/en/reference/line-login/#verify-access-token)|OAuth2dot1.VerifyAccessTokenValidityAsync|✔|
+|[Refresh access token](https://developers.line.biz/en/reference/line-login/#refresh-access-token)|OAuth2dot1.RefreshAccessTokenAsync|✔|
+|[Revoke access token](https://developers.line.biz/en/reference/line-login/#revoke-access-token)|OAuth2dot1.RevokeAccessTokenAsync|✔|
+|[Verify ID token](https://developers.line.biz/en/reference/line-login/#verify-id-token)|OAuth2dot1.VerifyIdTokenAsync|✔|
+|[Get user information](https://developers.line.biz/en/reference/line-login/#userinfo)|OAuth2dot1.GetUserInformationAsync|✔|
+|[Get user profile](https://developers.line.biz/en/reference/line-login/#get-user-profile)|GetUserProfileAsync|✔|
+|[Get friendship status](https://developers.line.biz/en/reference/line-login/#get-friendship-status)|GetFriendshipStatusAsync|✔|
+
 # 3. 참고 문서
 * [Messaging API reference](https://developers.line.biz/en/reference/messaging-api/)
 * [How to serialize properties of derived classes with System.Text.Json](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism?pivots=dotnet-7-0) 
