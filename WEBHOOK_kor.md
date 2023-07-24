@@ -8,8 +8,8 @@ LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는
 ## 2. open api project
 1. [line webhook sample](https://github.com/charles96/LineDevelopers.Net/tree/master/Src/LineDevelopers.Webhook.Sample) project 다운로드
 2. Visual Studio → open project
-3. LineController.cs
-  * channel access token 수정
+3. channel access token 수정
+  * LineController.cs
   ```csharp
   public LineController()
   {
@@ -22,7 +22,7 @@ LINE Develpers.NET library를 이용하여 간단한 webhook을 테스트 하는
   ![image](https://github.com/charles96/LineDevelopers.Net/blob/master/Assets/swagger.png?raw=true)
 
 ## 3. ngrok 설치 및 세팅
-자신의 local에 생성한 api를 LINE Messanger 서버에서 직접 호출하기 위해 아래와 같은 절차가 필요하다.
+자신의 local에 생성한 api를 LINE Messenger 서버에서 직접 호출하기 위해 아래와 같은 절차가 필요하다.
 ### 3-1. 자신의 pc환경에 맞는 ngrok을 다운로드
   * [ngrok download](https://ngrok.com/download)
 ### 3-2. ngrok 실행

@@ -6,7 +6,7 @@
 This C# Library is implemented of the [LINE Developers APIs](https://developers.line.biz/en/docs/). and This is an unofficial LINE Developers library. 
 There are so many features in LINE Developers APIs. 
 However couldn't test such of features which are not offer in KOREA and some of pay features.
-but It'll works well. I hope it's helpful to develop message send and chatbot via LINE.
+but It'll works well. I hope it's helpful to develop message send and chatbot via LINE Messenger.
 
 * install from nuget
 ```powershell

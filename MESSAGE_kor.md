@@ -1,8 +1,12 @@
 # 메시지 발송
 LineMessaging API.Net을 통해 여러가지 유형의 메시지 생성 방법 및 발송 방법에 대해 아래와 같이 정리하였으니 참고하시기 바랍니다.
+# 메시지 타입과 quick reply
+LINE Developers에서 제공되는 모든 유형의 메시지를 만들 수 있습니다. 위키 내용을 우선 참고해주세요.
+* [Wiki](https://github.com/charles96/LineDevelopers.NET/wiki)
+
 # 참고 코드
   * [유형별 메시지 발송 TestCode](https://github.com/charles96/LineDevelopers.Net/blob/master/Src/LineDevelopers.Tests/LineMessageClientTest.cs)
-  * [Flex 메시지 발송 Test Code](https://github.com/charles96/LineDevelopers.Net/blob/master/Src/LineDevelopers.Tests/LineFlexMessageTest.cs)
+  * [flex message simulator example](https://github.com/charles96/LineDevelopers.NET/wiki/flex-message-simulator-example)
 # 메시지 발송 sample
 * SendBroadcastMessageAsync method를 통해 X-Line-Retry-Key와 함께 단순 text메시지 발송 예시)
     ```csharp
