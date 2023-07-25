@@ -25,8 +25,8 @@ namespace Line.Message
         /// The number returned excludes the LINE Official Account.</returns>
         public async Task<int> GetNumberOfUsersAsync(string roomId)
         {
-            var json = await base.GetAsync<JsonNode>($"v2/bot/room/{roomId}/members/count").ConfigureAwait(false);
-            return Convert.ToInt32(json["count"]);
+            var result = await base.GetAsync<JsonNode>($"v2/bot/room/{roomId}/members/count").ConfigureAwait(false);
+            return result["count"].GetValue<int>();
         }
 
         /// <summary>
