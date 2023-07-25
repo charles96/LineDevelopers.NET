@@ -1,7 +1,14 @@
 ﻿# how to create / send a message
+
+# message types & quick reply
+LINE message API has been offered variant message types and you can develop it through LineDevelopers.NET.  
+please refer to my wiki.
+* [Wiki](https://github.com/charles96/LineDevelopers.NET/wiki)
+
 # test codes
   * [test codes to send a message of each types](https://github.com/charles96/LineDevelopers.Net/blob/master/Src/LineDevelopers.Tests/LineMessageClientTest.cs)
   * [flex message simulator example](https://github.com/charles96/LineDevelopers.NET/wiki/flex-message-simulator-example)
+
 # send message sample
 * example to send a simple text message with a 'X-Line-Retry-Key' header via SendBroadcastMessageAsync method
     ```csharp
