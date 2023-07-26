@@ -8,7 +8,17 @@
         {
             DoesNotThrowAsync(async () =>
             {
-                var result = await _client.GroupChat.GetSummaryAsync(GROUP_CHAT_ID);
+                var result = await _client.GroupChat.GetSummaryAsync(GROUP_CHAT_ID,
+                    (o) => 
+                    {
+                        IEnumerable<string> xLineRequestId;
+
+                        if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                        {
+                            That(xLineRequestId.First(), Is.Not.Null);
+                            That(xLineRequestId.First(), Is.Not.Empty);
+                        }
+                    });
 
                 That(result.GroupName, Is.EqualTo("ㅇㅇ"));
                 That(result.GroupId, Is.EqualTo(GROUP_CHAT_ID));
@@ -20,7 +30,17 @@
         {
             DoesNotThrowAsync(async () =>
             {
-                var result = await _client.GroupChat.GetNumberOfUsersAsync(GROUP_CHAT_ID);
+                var result = await _client.GroupChat.GetNumberOfUsersAsync(GROUP_CHAT_ID,
+                    (o) =>
+                    {
+                        IEnumerable<string> xLineRequestId;
+
+                        if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                        {
+                            That(xLineRequestId.First(), Is.Not.Null);
+                            That(xLineRequestId.First(), Is.Not.Empty);
+                        }
+                    });
 
                 That(result, Is.EqualTo(2), $"{result}");
             });
@@ -32,7 +52,17 @@
         {
             DoesNotThrowAsync(async () =>
             {
-                var result = await _client.GroupChat.GetMemberUserIdsAsync(GROUP_CHAT_ID);
+                var result = await _client.GroupChat.GetMemberUserIdsAsync(GROUP_CHAT_ID,
+                    (o) =>
+                    {
+                        IEnumerable<string> xLineRequestId;
+
+                        if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                        {
+                            That(xLineRequestId.First(), Is.Not.Null);
+                            That(xLineRequestId.First(), Is.Not.Empty);
+                        }
+                    });
 
                 That(result.MemberIds.Count, Is.EqualTo(2), $"{result.MemberIds.Count}");
             });
@@ -43,7 +73,17 @@
         {
             DoesNotThrowAsync(async () =>
             {
-                var result = await _client.GroupChat.GetChatMemberProfileAsync(GROUP_CHAT_ID,USER_ID);
+                var result = await _client.GroupChat.GetChatMemberProfileAsync(GROUP_CHAT_ID,USER_ID,
+                    (o) =>
+                    {
+                        IEnumerable<string> xLineRequestId;
+
+                        if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                        {
+                            That(xLineRequestId.First(), Is.Not.Null);
+                            That(xLineRequestId.First(), Is.Not.Empty);
+                        }
+                    });
 
                 That(result.DisplayName, Is.EqualTo("Charles"), $"{result.DisplayName}");
                 That(result.UserId, Is.EqualTo(USER_ID), $"{result.UserId}");
@@ -54,7 +94,19 @@
         [Ignore("tested")]
         public void LeaveAsyncTest()
         {
-            DoesNotThrowAsync(async () => await _client.GroupChat.LeaveAsync(GROUP_CHAT_ID));
+            DoesNotThrowAsync(async () => 
+            { 
+                await _client.GroupChat.LeaveAsync(GROUP_CHAT_ID, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
+            });
         }
     }
 }

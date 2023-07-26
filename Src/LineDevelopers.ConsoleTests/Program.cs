@@ -7,35 +7,58 @@ var json = File.ReadAllText(@"c:\temp\test.json");
 var config = JsonSerializer.Deserialize<TestConfig>(json);
 
 
-
-
-using (LineLoginClient client = new LineLoginClient())
+using (var test = new LineMessagingClient(config.ChannelAccessToken))
 {
-    var issued = await client.OAuth2dot1.IssueAccessTokenAsync("code", "redirectUrl", "clientId", "secret");
-    var profile = await client.GetUserProfileAsync(issued.AccessToken);
+    await test.Message.SendBroadcastMessageAsync(new TextMessage("fdasfds"), 
+        getResponseHeaders:(o) => 
+        {
+            IEnumerable<string> xLineRequestId;
+            IEnumerable<string> xLineAcceptedRequestId;
+
+            if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+            {
+                Console.WriteLine(xLineRequestId.First());
+            }
+
+            if (o.TryGetValues("X-Line-Accepted-Request-Id", out xLineAcceptedRequestId))
+            {
+                Console.WriteLine(xLineAcceptedRequestId.First());
+            }
+        });
 }
 
 
-using (var client2 = new LineMessagingClient(config.ChannelAccessToken))
-{
-    try
-    {
 
-        var result = await client2.Bot.GetBotInformationAsync();
 
-        Console.WriteLine(result.PremiumId);
-        Console.WriteLine(result.PictureUrl);
-        Console.WriteLine($"User ID : {result.UserId}");
-        Console.WriteLine($"ChatMode : {result.ChatMode}");
-        Console.WriteLine($"MarkAsReadMode : {result.MarkAsReadMode}");
+//using (LineLoginClient client = new LineLoginClient())
+//{
+//    var issued = await client.OAuth2dot1.IssueAccessTokenAsync("code", "redirectUrl", "clientId", "secret");
+//    var profile = await client.GetUserProfileAsync(issued.AccessToken);
+//}
 
-    }
-    catch (LineCredentialException ex)
-    {
-        Console.WriteLine($"error : {ex.Message}");
-        Console.WriteLine($"error_description : {ex.Detail}");
-    }
-}
+
+//using (var client2 = new LineMessagingClient(config.ChannelAccessToken))
+//{
+//    try
+//    {
+
+//        var result = await client2.Bot.GetBotInformationAsync();
+
+//        Console.WriteLine(result.PremiumId);
+//        Console.WriteLine(result.PictureUrl);
+//        Console.WriteLine($"User ID : {result.UserId}");
+//        Console.WriteLine($"ChatMode : {result.ChatMode}");
+//        Console.WriteLine($"MarkAsReadMode : {result.MarkAsReadMode}");
+
+//    }
+//    catch (LineCredentialException ex)
+//    {
+//        Console.WriteLine($"error : {ex.Message}");
+//        Console.WriteLine($"error_description : {ex.Detail}");
+//    }
+//}
+
+
 
 
 //var main = new Main();

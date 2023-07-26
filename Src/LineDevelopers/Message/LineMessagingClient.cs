@@ -14,7 +14,7 @@
 
         public LineMessagingClient(string channelAccessToken, double timeout = 100d)
             : base(channelAccessToken, timeout)
-        { 
+        {
         }
 
         protected override async Task EnsureSuccessStatusCodeAsync(HttpResponseMessage? httpResponseMessage)

@@ -36,6 +36,89 @@ namespace LineDevelopers.Tests
         }
 
         [Test]
+        public async Task SendPushMessageAsyncWithXLineRequestIdTest()
+        {
+            #region arrange
+            var request = new TextMessage()
+            {
+                Text = "push with X-Line-Request-Id Test",
+                QuickReply = new QuickReply()
+                {
+                    Items = new List<QuickReplyButtonObject>()
+                    {
+                        new QuickReplyButtonObject()
+                        {
+                            Action = new MessageAction()
+                            {
+                                Label = "test label",
+                                Text = "test text"
+                            }
+                        }
+                    }
+                }
+            };
+            var uuid = Guid.NewGuid().ToString();
+            #endregion
+
+            DoesNotThrowAsync(async () =>
+            {
+                await _client.Message.SendPushMessageAsync(USER_ID, request, xLineRetryKey: uuid, 
+                    getResponseHeaders:(o) => 
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
+            });
+        }
+
+        [Test]
+        public async Task BroadcastMessageAsyncWithXLineRequestIdTest()
+        {
+            #region arrange
+            var request = new TextMessage()
+            {
+                Text = "broadcast with X-Line-Request-Id Test",
+                QuickReply = new QuickReply()
+                {
+                    Items = new List<QuickReplyButtonObject>()
+                    {
+                        new QuickReplyButtonObject()
+                        {
+                            Action = new MessageAction()
+                            {
+                                Label = "test label",
+                                Text = "test text"
+                            }
+                        }
+                    }
+                }
+            };
+            var uuid = Guid.NewGuid().ToString();
+            #endregion
+
+            DoesNotThrowAsync(async () =>
+            {
+                await _client.Message.SendBroadcastMessageAsync(request, xLineRetryKey: uuid,
+                    getResponseHeaders: (o) =>
+                    {
+                        IEnumerable<string> xLineRequestId;
+
+                        if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                        {
+                            That(xLineRequestId.First(), Is.Not.Null);
+                            That(xLineRequestId.First(), Is.Not.Empty);
+                        }
+                    });
+            });
+        }
+
+
+        [Test]
         public void LocationMessageTest()
         {
             #region arrange

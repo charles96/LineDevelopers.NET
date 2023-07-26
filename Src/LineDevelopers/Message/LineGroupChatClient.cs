@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace Line.Message
@@ -16,25 +17,25 @@ namespace Line.Message
         protected override async Task EnsureSuccessStatusCodeAsync(HttpResponseMessage? httpResponseMessage)
             => await httpResponseMessage.EnsureSuccessStatusCodeForLineMessageAsync().ConfigureAwait(false);
 
-        public async Task<GroupChatSummary> GetSummaryAsync(string groupId)
-            => await base.GetAsync<GroupChatSummary>($"v2/bot/group/{groupId}/summary").ConfigureAwait(false);
+        public async Task<GroupChatSummary> GetSummaryAsync(string groupId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<GroupChatSummary>($"v2/bot/group/{groupId}/summary", getResponseHeaders).ConfigureAwait(false);
 
-        public async Task<int> GetNumberOfUsersAsync(string groupId)
+        public async Task<int> GetNumberOfUsersAsync(string groupId, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<JsonNode>($"v2/bot/group/{groupId}/members/count").ConfigureAwait(false);
+            var result = await base.GetAsync<JsonNode>($"v2/bot/group/{groupId}/members/count", getResponseHeaders).ConfigureAwait(false);
             return result["count"].GetValue<int>();
         }
 
-        public async Task<GroupChatMemberUserIDs> GetMemberUserIdsAsync(string groupId)
-            => await base.GetAsync<GroupChatMemberUserIDs>($"v2/bot/group/{groupId}/members/ids").ConfigureAwait(false);
+        public async Task<GroupChatMemberUserIDs> GetMemberUserIdsAsync(string groupId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<GroupChatMemberUserIDs>($"v2/bot/group/{groupId}/members/ids", getResponseHeaders).ConfigureAwait(false);
 
-        public async Task<GroupChatMemberUserIDs> GetMemberUserIdsAsync(string groupId, string start)
-            => await base.GetAsync<GroupChatMemberUserIDs>($"v2/bot/group/{groupId}/members/ids?start={start}").ConfigureAwait(false);
+        public async Task<GroupChatMemberUserIDs> GetMemberUserIdsAsync(string groupId, string start, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<GroupChatMemberUserIDs>($"v2/bot/group/{groupId}/members/ids?start={start}", getResponseHeaders).ConfigureAwait(false);
 
-        public async Task<GroupChatMemberProfile> GetChatMemberProfileAsync(string groupId, string userId)
-            => await base.GetAsync<GroupChatMemberProfile>($"v2/bot/group/{groupId}/member/{userId}").ConfigureAwait(false);
+        public async Task<GroupChatMemberProfile> GetChatMemberProfileAsync(string groupId, string userId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<GroupChatMemberProfile>($"v2/bot/group/{groupId}/member/{userId}", getResponseHeaders).ConfigureAwait(false);
 
-        public async Task LeaveAsync(string groupId)
-            => await base.PostAsync($"v2/bot/group/{groupId}/leave").ConfigureAwait(false);
+        public async Task LeaveAsync(string groupId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsync($"v2/bot/group/{groupId}/leave", getResponseHeaders).ConfigureAwait(false);
     }
 }

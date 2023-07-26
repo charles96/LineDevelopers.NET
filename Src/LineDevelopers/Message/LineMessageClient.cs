@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace Line.Message
@@ -25,10 +26,10 @@ namespace Line.Message
         /// </summary>
         /// <param name="replyMessage"></param>
         /// <returns></returns>
-        private async Task SendReplyMessageAsync(ReplyMessage replyMessage)
-            => await base.PostAsJsonAsync("v2/bot/message/reply", replyMessage).ConfigureAwait(false);
+        private async Task SendReplyMessageAsync(ReplyMessage replyMessage, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsJsonAsync("v2/bot/message/reply", replyMessage, getResponseHeaders).ConfigureAwait(false);
 
-        public async Task SendReplyMessageAsync(string replyToken, IMessage message, bool? notificationDisabled = null)
+        public async Task SendReplyMessageAsync(string replyToken, IMessage message, bool? notificationDisabled = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new ReplyMessage()
             {
@@ -37,10 +38,10 @@ namespace Line.Message
                 NotificationDisabled = notificationDisabled
             };
 
-            await this.SendReplyMessageAsync(request).ConfigureAwait(false);
+            await this.SendReplyMessageAsync(request, getResponseHeaders).ConfigureAwait(false);
         }
 
-        public async Task SendReplyMessageAsync(string replyToken, IList<IMessage> messages, bool? notificationDisabled = null)
+        public async Task SendReplyMessageAsync(string replyToken, IList<IMessage> messages, bool? notificationDisabled = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new ReplyMessage()
             {
@@ -49,7 +50,7 @@ namespace Line.Message
                 NotificationDisabled = notificationDisabled
             };
 
-            await this.SendReplyMessageAsync(request).ConfigureAwait(false);
+            await this.SendReplyMessageAsync(request, getResponseHeaders).ConfigureAwait(false);
         }
         #endregion
 
@@ -60,8 +61,8 @@ namespace Line.Message
         /// <param name="pushMessage"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        private async Task SendPushMessageAsync(PushMessage pushMessage, string? xLineRetryKey = null)
-            => await base.PostAsJsonAsync("v2/bot/message/push", pushMessage, X_LINE_RETRY_KEY, xLineRetryKey).ConfigureAwait(false);
+        private async Task SendPushMessageAsync(PushMessage pushMessage, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsJsonAsync("v2/bot/message/push", pushMessage, X_LINE_RETRY_KEY, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Sends a message to a user, group chat, or multi-person chat at any time.
@@ -71,16 +72,17 @@ namespace Line.Message
         /// <param name="notificationDisabled"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        public async Task SendPushMessageAsync(string to, IList<IMessage> messages, bool? notificationDisabled = null, string? xLineRetryKey = null)
+        public async Task SendPushMessageAsync(string to, IList<IMessage> messages, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new PushMessage()
             {
                 To = to,
                 Messages = messages,
+                CustomAggregationUnits = customAggregationUnits,
                 NotificationDisabled = notificationDisabled
             };
 
-            await this.SendPushMessageAsync(request, xLineRetryKey).ConfigureAwait(false);
+            await this.SendPushMessageAsync(request, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -91,16 +93,17 @@ namespace Line.Message
         /// <param name="notificationDisabled"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        public async Task SendPushMessageAsync(string to, IMessage message, bool? notificationDisabled = null, string? xLineRetryKey = null)
+        public async Task SendPushMessageAsync(string to, IMessage message, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new PushMessage()
             {
                 To = to,
                 Messages = new List<IMessage>() { message },
+                CustomAggregationUnits = customAggregationUnits,
                 NotificationDisabled = notificationDisabled
             };
 
-            await this.SendPushMessageAsync(request, xLineRetryKey).ConfigureAwait(false);
+            await this.SendPushMessageAsync(request, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
         }
         #endregion
 
@@ -109,8 +112,8 @@ namespace Line.Message
         /// An API that efficiently sends the same message to multiple user IDs. You can't send messages to group chats or multi-person chats.
         /// </summary>
         /// <returns></returns>
-        private async Task SendMulticastMessageAsync(MulticastMessage multicastMessage, string? xLineRetryKey = null)
-            => await base.PostAsJsonAsync("v2/bot/message/multicast", multicastMessage, X_LINE_RETRY_KEY, xLineRetryKey).ConfigureAwait(false);
+        private async Task SendMulticastMessageAsync(MulticastMessage multicastMessage, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsJsonAsync("v2/bot/message/multicast", multicastMessage, X_LINE_RETRY_KEY, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// An API that efficiently sends the same message to multiple user IDs. You can't send messages to group chats or multi-person chats.
@@ -121,7 +124,7 @@ namespace Line.Message
         /// <param name="customAggregationUnits"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        public async Task SendMulticastMessageAsync(IList<string> to, IList<IMessage> messages, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null)
+        public async Task SendMulticastMessageAsync(IList<string> to, IList<IMessage> messages, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new MulticastMessage()
             {
@@ -131,7 +134,7 @@ namespace Line.Message
                 CustomAggregationUnits = customAggregationUnits
             };
 
-            await this.SendMulticastMessageAsync(request, xLineRetryKey).ConfigureAwait(false);
+            await this.SendMulticastMessageAsync(request, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -143,7 +146,7 @@ namespace Line.Message
         /// <param name="customAggregationUnits"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        public async Task SendMulticastMessageAsync(IList<string> to, IMessage message, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null)
+        public async Task SendMulticastMessageAsync(IList<string> to, IMessage message, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new MulticastMessage()
             {
@@ -153,13 +156,13 @@ namespace Line.Message
                 CustomAggregationUnits = customAggregationUnits
             };
 
-            await this.SendMulticastMessageAsync(request, xLineRetryKey).ConfigureAwait(false);
+            await this.SendMulticastMessageAsync(request, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
         }
         #endregion
 
         #region SendNarrowcastMessageAsync
-        private async Task SendNarrowcastMessageAsync(NarrowcastMessage narrowcastMessage, string? xLineRetryKey = null)
-            => await base.PostAsJsonAsync("v2/bot/message/narrowcast", narrowcastMessage, X_LINE_RETRY_KEY, xLineRetryKey).ConfigureAwait(false);
+        private async Task SendNarrowcastMessageAsync(NarrowcastMessage narrowcastMessage, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsJsonAsync("v2/bot/message/narrowcast", narrowcastMessage, X_LINE_RETRY_KEY, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Sends a message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages can't be sent to group chats or multi-person chats.
@@ -171,7 +174,7 @@ namespace Line.Message
         /// <param name="notificationDisabled"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        public async Task SendNarrowcastMessageAsync(IList<IMessage> messages, IRecipientObject? recipient = null, NarrowcastMessageFilter? filter = null, NarrowcastLimit? limit = null, bool? notificationDisabled = null, string? xLineRetryKey = null)
+        public async Task SendNarrowcastMessageAsync(IList<IMessage> messages, IRecipientObject? recipient = null, NarrowcastMessageFilter? filter = null, NarrowcastLimit? limit = null, bool? notificationDisabled = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         { 
             var request = new NarrowcastMessage()
             {
@@ -182,7 +185,7 @@ namespace Line.Message
                 NotificationDisabled = notificationDisabled
             };
             
-            await this.SendNarrowcastMessageAsync(request, xLineRetryKey).ConfigureAwait(!false);
+            await this.SendNarrowcastMessageAsync(request, xLineRetryKey, getResponseHeaders).ConfigureAwait(!false);
         }
 
         /// <summary>
@@ -195,7 +198,7 @@ namespace Line.Message
         /// <param name="notificationDisabled"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        public async Task SendNarrowcastMessageAsync(IMessage message, IRecipientObject? recipient = null, NarrowcastMessageFilter? filter = null, NarrowcastLimit? limit = null, bool? notificationDisabled = null, string? xLineRetryKey = null)
+        public async Task SendNarrowcastMessageAsync(IMessage message, IRecipientObject? recipient = null, NarrowcastMessageFilter? filter = null, NarrowcastLimit? limit = null, bool? notificationDisabled = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new NarrowcastMessage()
             {
@@ -206,13 +209,15 @@ namespace Line.Message
                 NotificationDisabled = notificationDisabled
             };
 
-            await this.SendNarrowcastMessageAsync(request, xLineRetryKey).ConfigureAwait(!false);
+            await this.SendNarrowcastMessageAsync(request, xLineRetryKey, getResponseHeaders).ConfigureAwait(!false);
         }
         #endregion
 
         #region SendBroadcastMessageAsync
-        private async Task SendBroadcastMessageAsync(BroadcastMessage broadcastMessage, string? xLineRetryKey = null)
-            => await base.PostAsJsonAsync("v2/bot/message/broadcast", broadcastMessage, X_LINE_RETRY_KEY, xLineRetryKey).ConfigureAwait(false);
+        private async Task SendBroadcastMessageAsync(BroadcastMessage broadcastMessage, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
+        {
+            await base.PostAsJsonAsync("v2/bot/message/broadcast", broadcastMessage, X_LINE_RETRY_KEY, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Sends a message to all users who are friends with your LINE Official Account at any time.
@@ -221,7 +226,7 @@ namespace Line.Message
         /// <param name="notificationDisabled"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        public async Task SendBroadcastMessageAsync(IList<IMessage> messages, bool? notificationDisabled = null, string? xLineRetryKey = null)
+        public async Task SendBroadcastMessageAsync(IList<IMessage> messages, bool? notificationDisabled = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new BroadcastMessage()
             {
@@ -229,7 +234,7 @@ namespace Line.Message
                 NotificationDisabled = notificationDisabled
             };
             
-            await this.SendBroadcastMessageAsync(request,xLineRetryKey).ConfigureAwait(false);
+            await this.SendBroadcastMessageAsync(request,xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -239,7 +244,7 @@ namespace Line.Message
         /// <param name="notificationDisabled"></param>
         /// <param name="xLineRetryKey"></param>
         /// <returns></returns>
-        public async Task SendBroadcastMessageAsync(IMessage message, bool? notificationDisabled = null, string? xLineRetryKey = null)
+        public async Task SendBroadcastMessageAsync(IMessage message, bool? notificationDisabled = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new BroadcastMessage()
             {
@@ -247,28 +252,28 @@ namespace Line.Message
                 NotificationDisabled = notificationDisabled
             };
 
-            await this.SendBroadcastMessageAsync(request, xLineRetryKey).ConfigureAwait(false);
+            await this.SendBroadcastMessageAsync(request, xLineRetryKey, getResponseHeaders).ConfigureAwait(false);
         }
         #endregion
 
-        public async Task<NarrowcastMessageStatus> GetNarrowcastMessageStatusAsync(string requestId)
-            => await base.GetAsync<NarrowcastMessageStatus>($"v2/bot/message/progress/narrowcast?requestId={requestId}").ConfigureAwait(false);
+        public async Task<NarrowcastMessageStatus> GetNarrowcastMessageStatusAsync(string requestId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<NarrowcastMessageStatus>($"v2/bot/message/progress/narrowcast?requestId={requestId}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Gets the target limit for sending messages in the current month. 
         /// The total number of the free messages and the additional messages is returned.
         /// </summary>
         /// <returns></returns>
-        public async Task<TargetLimitForSendingMessagesThisMonth> GetTheTargetLimitForSendingMessagesThisMonthAsync()
-            => await base.GetAsync<TargetLimitForSendingMessagesThisMonth>("v2/bot/message/quota").ConfigureAwait(false);
+        public async Task<TargetLimitForSendingMessagesThisMonth> GetTheTargetLimitForSendingMessagesThisMonthAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<TargetLimitForSendingMessagesThisMonth>("v2/bot/message/quota", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Gets the number of messages sent in the current month.
         /// </summary>
         /// <returns></returns>
-        public async Task<int> GetNumberOfMessagesSentThisMonthAsync()
+        public async Task<int> GetNumberOfMessagesSentThisMonthAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<JsonNode>("v2/bot/message/quota/consumption").ConfigureAwait(false);
+            var result = await base.GetAsync<JsonNode>("v2/bot/message/quota/consumption", getResponseHeaders).ConfigureAwait(false);
             return result["totalUsage"].GetValue<int>();
         }
 
@@ -279,32 +284,32 @@ namespace Line.Message
         /// <param name="date"></param>
         /// <returns></returns>
         /// <exception cref="NotSupportedException"></exception>
-        public async Task<NumberOfSentMessages> GetNumberOfSentMessagesAsync(SendType sendType, DateOnly date)
+        public async Task<NumberOfSentMessages> GetNumberOfSentMessagesAsync(SendType sendType, DateOnly date, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             if (sendType == SendType.Narrowcast) throw new NotSupportedException();
-            return await base.GetAsync<NumberOfSentMessages>($"v2/bot/message/delivery/{sendType.ToString().ToLower()}?date={date.ToString("yyyyMMdd")}").ConfigureAwait(false);
+            return await base.GetAsync<NumberOfSentMessages>($"v2/bot/message/delivery/{sendType.ToString().ToLower()}?date={date.ToString("yyyyMMdd")}", getResponseHeaders).ConfigureAwait(false);
         }
 
-        public async Task ValidateMessageObjectsOfMessageAsync(SendType sendType, IList<IMessage> messages)
-            => await base.PostAsJsonAsync<RequestMessages>($"v2/bot/message/validate/{sendType.ToString().ToLower()}", new RequestMessages() { Message = messages }).ConfigureAwait(false);
+        public async Task ValidateMessageObjectsOfMessageAsync(SendType sendType, IList<IMessage> messages, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsJsonAsync<RequestMessages>($"v2/bot/message/validate/{sendType.ToString().ToLower()}", new RequestMessages() { Message = messages }, getResponseHeaders).ConfigureAwait(false);
 
-        public async Task ValidateMessageObjectsOfMessageAsync(SendType sendType, IMessage message)
-            => await this.ValidateMessageObjectsOfMessageAsync(sendType, new List<IMessage> { message }).ConfigureAwait(false);
+        public async Task ValidateMessageObjectsOfMessageAsync(SendType sendType, IMessage message, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await this.ValidateMessageObjectsOfMessageAsync(sendType, new List<IMessage> { message }, getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Get the number of aggregation units used this month.
         /// </summary>
         /// <returns></returns>
-        public async Task<int> GetNumberOfUnitsUsedThisMonthAsync()
+        public async Task<int> GetNumberOfUnitsUsedThisMonthAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<JsonNode>("v2/bot/message/aggregation/info").ConfigureAwait(false);
+            var result = await base.GetAsync<JsonNode>("v2/bot/message/aggregation/info",getResponseHeaders).ConfigureAwait(false);
             return result["numOfCustomAggregationUnits"].GetValue<int>();
         }
 
-        public async Task<NameListOfUnitsUsedThisMonth> GetNameListOfUnitsUsedThisMonthAsync(int limit = 100)
-            => await base.GetAsync<NameListOfUnitsUsedThisMonth>($"v2/bot/message/aggregation/list?limit={limit}").ConfigureAwait(false);
+        public async Task<NameListOfUnitsUsedThisMonth> GetNameListOfUnitsUsedThisMonthAsync(int limit = 100, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<NameListOfUnitsUsedThisMonth>($"v2/bot/message/aggregation/list?limit={limit}", getResponseHeaders).ConfigureAwait(false);
 
-        public async Task<NameListOfUnitsUsedThisMonth> GetNameListOfUnitsUsedThisMonthAsync(int limit, string start)
-            => await base.GetAsync<NameListOfUnitsUsedThisMonth>($"v2/bot/message/aggregation/list?limit={limit}&start={start}").ConfigureAwait(false);
+        public async Task<NameListOfUnitsUsedThisMonth> GetNameListOfUnitsUsedThisMonthAsync(int limit, string start, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<NameListOfUnitsUsedThisMonth>($"v2/bot/message/aggregation/list?limit={limit}&start={start}", getResponseHeaders).ConfigureAwait(false);
     }
 }

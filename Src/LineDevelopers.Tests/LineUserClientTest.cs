@@ -8,7 +8,17 @@
         {
             DoesNotThrowAsync(async () =>
             {
-                var result = await base._client.Users.GetUserProfileAsync(USER_ID);
+                var result = await base._client.Users.GetUserProfileAsync(USER_ID, 
+                    getResponseHeaders: (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
 
                 That(result.DisplayName, Is.EqualTo("Charles"), result.DisplayName);
                 IsNotEmpty(result.UserId);
@@ -21,7 +31,17 @@
         {
             DoesNotThrowAsync(async () =>
             {
-                var result = await base._client.Users.GetFollowersAsync();
+                var result = await base._client.Users.GetFollowersAsync(getResponseHeaders: (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
+
                 GreaterOrEqual(result.Message.Count(), 1, $"{result.Message.Count()}");
             });
         }

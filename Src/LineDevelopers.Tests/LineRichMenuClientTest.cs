@@ -75,7 +75,16 @@ namespace LineDevelopers.Tests
         [Description("validation richmenu")]
         public void ValidationTest()
         {
-            DoesNotThrowAsync(() => _client.RichMenu.ValidateRichMenuAsync(MockRichMenu("MOCK1")));
+            DoesNotThrowAsync(() => _client.RichMenu.ValidateRichMenuAsync(MockRichMenu("MOCK1"), (o) =>
+            {
+                IEnumerable<string> xLineRequestId;
+
+                if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                {
+                    That(xLineRequestId.First(), Is.Not.Null);
+                    That(xLineRequestId.First(), Is.Not.Empty);
+                }
+            }));
         }
 
         [Test, Order(2)]
@@ -86,7 +95,17 @@ namespace LineDevelopers.Tests
 
             DoesNotThrowAsync(async () =>
             {
-                var result = await _client.RichMenu.CreateRichMenuAsync(request);
+                var result = await _client.RichMenu.CreateRichMenuAsync(request, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
+
                 _richMenuId = result;
 
                 IsNotEmpty(result);
@@ -98,7 +117,16 @@ namespace LineDevelopers.Tests
         {
             DoesNotThrowAsync(async () =>
             {
-                var result = await _client.RichMenu.GetRichMenuAsync(_richMenuId);
+                var result = await _client.RichMenu.GetRichMenuAsync(_richMenuId, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
 
                 That(_richMenuId, Is.EqualTo(result.RichMenuId));
             });
@@ -107,13 +135,32 @@ namespace LineDevelopers.Tests
         [Test, Order(4)]
         public async Task UploadRichMenuImageTest()
         {
-            DoesNotThrowAsync(() => _client.RichMenu.UploadRichMenuImageAsync(_richMenuId, @"c:\Temp\png.jpg", MediaType.Jpg));
+            DoesNotThrowAsync(() => _client.RichMenu.UploadRichMenuImageAsync(_richMenuId, @"c:\Temp\png.jpg", MediaType.Jpg, 
+                (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                }));
         }
 
         [Test, Order(5)]
         public async Task DownloadRichMenuImageAsyncTest()
         {
-            DoesNotThrowAsync(() => _client.RichMenu.DownloadRichMenuImageAsync(_richMenuId, @"c:\Te2mp\222.jpg"));
+            DoesNotThrowAsync(() => _client.RichMenu.DownloadRichMenuImageAsync(_richMenuId, @"c:\Te2mp\222.jpg", (o) =>
+            {
+                IEnumerable<string> xLineRequestId;
+
+                if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                {
+                    That(xLineRequestId.First(), Is.Not.Null);
+                    That(xLineRequestId.First(), Is.Not.Empty);
+                }
+            }));
         }
 
         [Test, Order(6)]
@@ -123,7 +170,16 @@ namespace LineDevelopers.Tests
 
                 var richmenu = MockRichMenu("MOCK1");
 
-                var result = await _client.RichMenu.GetRichMenuListAsync();
+                var result = await _client.RichMenu.GetRichMenuListAsync((o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
 
                 GreaterOrEqual(result.Count(), 1, $"{result.Count()}");
                 That(result[0].Name, Is.EqualTo(richmenu.Name));
@@ -134,7 +190,16 @@ namespace LineDevelopers.Tests
         [Description("not exist default richmenu test")]
         public void GetDefaultRichMenuIdAsync1Test()
         {
-            var ex = ThrowsAsync<LineException>(() => _client.RichMenu.GetDefaultRichMenuIdAsync());
+            var ex = ThrowsAsync<LineException>(() => _client.RichMenu.GetDefaultRichMenuIdAsync((o) =>
+            {
+                IEnumerable<string> xLineRequestId;
+
+                if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                {
+                    That(xLineRequestId.First(), Is.Not.Null);
+                    That(xLineRequestId.First(), Is.Not.Empty);
+                }
+            }));
 
             That(ex.Message, Is.EqualTo("no default richmenu"), $"{ex.Message}");
         }
@@ -143,7 +208,16 @@ namespace LineDevelopers.Tests
         public void SetDefaultRichMenuAsyncTest()
         {
             DoesNotThrowAsync(async () => {
-                await _client.RichMenu.SetDefaultRichMenuAsync(_richMenuId);
+                await _client.RichMenu.SetDefaultRichMenuAsync(_richMenuId, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
             });
         }
 
@@ -152,7 +226,16 @@ namespace LineDevelopers.Tests
         {
             DoesNotThrowAsync(async () => {
 
-                var result = await _client.RichMenu.GetDefaultRichMenuIdAsync();
+                var result = await _client.RichMenu.GetDefaultRichMenuIdAsync((o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
 
                 That(result, Is.EqualTo(_richMenuId));
             });
@@ -162,7 +245,16 @@ namespace LineDevelopers.Tests
         public void CancelDefaultRichMenuAsyncTest()
         {
             DoesNotThrowAsync(async () => {
-                await _client.RichMenu.CancelDefaultRichMenuAsync();
+                await _client.RichMenu.CancelDefaultRichMenuAsync((o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
             });
         }
 
@@ -170,15 +262,33 @@ namespace LineDevelopers.Tests
         public void CreateRichMenuAliasAsyncTest()
         {
             DoesNotThrowAsync(async () => {
-                await _client.RichMenu.CreateRichMenuAliasAsync(_richMenuId, "charles_rich");
+                await _client.RichMenu.CreateRichMenuAliasAsync(_richMenuId, "charles_rich", (o) =>
+                    {
+                IEnumerable<string> xLineRequestId;
+
+                if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                {
+                    That(xLineRequestId.First(), Is.Not.Null);
+                    That(xLineRequestId.First(), Is.Not.Empty);
+                }
             });
+        });
         }
 
         [Test, Order(12)]
         public void UpdateRichMenuAliasAsyncTest()
         {
             DoesNotThrowAsync(async () => {
-                await _client.RichMenu.UpdateRichMenuAliasAsync(_richMenuId, "charles_rich");
+                await _client.RichMenu.UpdateRichMenuAliasAsync(_richMenuId, "charles_rich", (o) =>
+                    {
+                        IEnumerable<string> xLineRequestId;
+
+                        if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                        {
+                            That(xLineRequestId.First(), Is.Not.Null);
+                            That(xLineRequestId.First(), Is.Not.Empty);
+                        }
+                    });
             });
         }
 
@@ -186,7 +296,16 @@ namespace LineDevelopers.Tests
         public void GetRichMenuAliasInformationAsyncTest()
         {
             DoesNotThrowAsync(async () => {
-                var result = await _client.RichMenu.GetRichMenuAliasInformationAsync("charles_rich");
+                var result = await _client.RichMenu.GetRichMenuAliasInformationAsync("charles_rich", (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
 
                 That(result.RichMenuId, Is.EqualTo(_richMenuId));
                 That(result.RichMenuAliasId, Is.EqualTo("charles_rich"));
@@ -197,7 +316,16 @@ namespace LineDevelopers.Tests
         public void GetListOfRichMenuAliasAsyncTest()
         {
             DoesNotThrowAsync(async () => {
-                var result = await _client.RichMenu.GetListOfRichMenuAliasAsync();
+                var result = await _client.RichMenu.GetListOfRichMenuAliasAsync((o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
 
                 That(result[0].RichMenuId, Is.EqualTo(_richMenuId));
                 That(result[0].RichMenuAliasId, Is.EqualTo("charles_rich"));
@@ -208,7 +336,16 @@ namespace LineDevelopers.Tests
         public void DeleteRichMenuAliasAsyncTest()
         {
             DoesNotThrowAsync(async () => {
-                await _client.RichMenu.DeleteRichMenuAliasAsync("charles_rich");
+                await _client.RichMenu.DeleteRichMenuAliasAsync("charles_rich", (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
             });
         }
 
@@ -216,7 +353,16 @@ namespace LineDevelopers.Tests
         public void LinkRichMenuToUserAsyncTest()
         {
             DoesNotThrowAsync(async () => {
-                await _client.RichMenu.LinkRichMenuToUserAsync(USER_ID, _richMenuId);
+                await _client.RichMenu.LinkRichMenuToUserAsync(USER_ID, _richMenuId, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
             });
         }
 
@@ -225,7 +371,16 @@ namespace LineDevelopers.Tests
         {
             DoesNotThrowAsync(async () => {
 
-                var result = await _client.RichMenu.GetRichMenuIdOfUserAsync(USER_ID);
+                var result = await _client.RichMenu.GetRichMenuIdOfUserAsync(USER_ID, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
 
                 That(result, Is.EqualTo(_richMenuId));
             });
@@ -234,7 +389,16 @@ namespace LineDevelopers.Tests
         [Test, Order(18)]
         public void UnlinkRichMenuFromUserAsyncTest()
         {
-            DoesNotThrowAsync(async () => await _client.RichMenu.UnlinkRichMenuFromUserAsync(USER_ID));
+            DoesNotThrowAsync(async () => await _client.RichMenu.UnlinkRichMenuFromUserAsync(USER_ID, (o) =>
+            {
+                IEnumerable<string> xLineRequestId;
+
+                if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                {
+                    That(xLineRequestId.First(), Is.Not.Null);
+                    That(xLineRequestId.First(), Is.Not.Empty);
+                }
+            }));
         }
 
         [Test, Order(19)]
@@ -244,7 +408,16 @@ namespace LineDevelopers.Tests
 
                 var users = new List<string>() { USER_ID };
 
-                await _client.RichMenu.LinkRichMenuToMultipleUsersAsync(_richMenuId, users);
+                await _client.RichMenu.LinkRichMenuToMultipleUsersAsync(_richMenuId, users, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
             });
         }
 
@@ -255,7 +428,16 @@ namespace LineDevelopers.Tests
 
                 var users = new List<string>() { USER_ID };
 
-                await _client.RichMenu.UnlinkRichMenusFromMultipleUsersAsync(users);
+                await _client.RichMenu.UnlinkRichMenusFromMultipleUsersAsync(users, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
             });
         }
 
@@ -268,7 +450,17 @@ namespace LineDevelopers.Tests
 
             DoesNotThrowAsync(async () =>
             {
-                var result = await _client.RichMenu.CreateRichMenuAsync(request);
+                var result = await _client.RichMenu.CreateRichMenuAsync(request, (o) =>
+                {
+                    IEnumerable<string> xLineRequestId;
+
+                    if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                    {
+                        That(xLineRequestId.First(), Is.Not.Null);
+                        That(xLineRequestId.First(), Is.Not.Empty);
+                    }
+                });
+
                 _richMenuId2 = result;
 
                 IsNotEmpty(result);
@@ -290,7 +482,17 @@ namespace LineDevelopers.Tests
                     }
                 };
 
-                await _client.RichMenu.ValidateRequestOfRichMenuBatchControlAsync(request);
+                await _client.RichMenu.ValidateRequestOfRichMenuBatchControlAsync(request, 
+                    getResponseHeaders: (o) => 
+                    {
+                        IEnumerable<string> xLineRequestId;
+
+                        if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                        {
+                            That(xLineRequestId.First(), Is.Not.Null);
+                            That(xLineRequestId.First(), Is.Not.Empty);
+                        }
+                    });
             });
         }
 
@@ -310,7 +512,17 @@ namespace LineDevelopers.Tests
                     }
                 };
 
-                await _client.RichMenu.ReplaceOrUnlinkTheLinkedRichMenusInBatchesAsync(request);
+                await _client.RichMenu.ReplaceOrUnlinkTheLinkedRichMenusInBatchesAsync(request,
+                    getResponseHeaders: (o) =>
+                    {
+                        IEnumerable<string> xLineRequestId;
+
+                        if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                        {
+                            That(xLineRequestId.First(), Is.Not.Null);
+                            That(xLineRequestId.First(), Is.Not.Empty);
+                        }
+                    });
             });
         }
 
@@ -336,7 +548,17 @@ namespace LineDevelopers.Tests
 
                 foreach (var menu in menus)
                 {
-                    await _client.RichMenu.DeleteRichMenuAsync(menu.RichMenuId);
+                    await _client.RichMenu.DeleteRichMenuAsync(menu.RichMenuId,
+                        getResponseHeaders: (o) =>
+                        {
+                            IEnumerable<string> xLineRequestId;
+
+                            if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                            {
+                                That(xLineRequestId.First(), Is.Not.Null);
+                                That(xLineRequestId.First(), Is.Not.Empty);
+                            }
+                        });
                 }
             });
         }

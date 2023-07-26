@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Line.Message
 {
@@ -20,11 +21,11 @@ namespace Line.Message
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<UserProfile> GetUserProfileAsync(string userId)
-            => await base.GetAsync<UserProfile>($"v2/bot/profile/{userId}").ConfigureAwait(false);
+        public async Task<UserProfile> GetUserProfileAsync(string userId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<UserProfile>($"v2/bot/profile/{userId}", getResponseHeaders).ConfigureAwait(false);
 
-        public async Task<Followers> GetFollowersAsync()
-            => await base.GetAsync<Followers>($"v2/bot/followers/ids").ConfigureAwait(false);
+        public async Task<Followers> GetFollowersAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<Followers>($"v2/bot/followers/ids",getResponseHeaders).ConfigureAwait(false);
 
     }
 }

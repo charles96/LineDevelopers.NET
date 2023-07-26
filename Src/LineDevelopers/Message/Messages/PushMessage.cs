@@ -46,6 +46,6 @@ namespace Line.Message
         /// </summary>
         [JsonPropertyName("customAggregationUnits")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string[]? CustomAggregationUnits { get; set; }
+        public IList<string>? CustomAggregationUnits { get; set; }
     }
 }

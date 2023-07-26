@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Line.Message
 {
@@ -20,32 +21,32 @@ namespace Line.Message
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public async Task<MessageDeliveriesCount> GetNumberOfMessageDeliveriesAsync(DateOnly date)
-            => await base.GetAsync<MessageDeliveriesCount>($"v2/bot/insight/message/delivery?date={date.ToString("yyyyMMdd")}").ConfigureAwait(false);
+        public async Task<MessageDeliveriesCount> GetNumberOfMessageDeliveriesAsync(DateOnly date, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<MessageDeliveriesCount>($"v2/bot/insight/message/delivery?date={date.ToString("yyyyMMdd")}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Returns the number of users who have added the LINE Official Account on or before a specified date.
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public async Task<FollowersCount> GetNumberOfFollowersAsync(DateOnly date)
-            => await base.GetAsync<FollowersCount>($"v2/bot/insight/followers?date={date.ToString("yyyyMMdd")}").ConfigureAwait(false);
+        public async Task<FollowersCount> GetNumberOfFollowersAsync(DateOnly date, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<FollowersCount>($"v2/bot/insight/followers?date={date.ToString("yyyyMMdd")}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Retrieves the demographic attributes for a LINE Official Account's friends. 
         /// You can only retrieve information about friends for LINE Official Accounts created by users in Japan (JP), Thailand (TH), Taiwan (TW) and Indonesia (ID).
         /// </summary>
         /// <returns></returns>
-        public async Task<FriendDemographics> GetFriendsDemographicsAsync()
-            => await base.GetAsync<FriendDemographics>("v2/bot/insight/demographic").ConfigureAwait(false);
+        public async Task<FriendDemographics> GetFriendsDemographicsAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<FriendDemographics>("v2/bot/insight/demographic", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Returns statistics about how users interact with narrowcast messages or broadcast messages sent from your LINE Official Account.
         /// </summary>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        public async Task<UserInteractionStatistics> GetUserInteractionStatisticsAsync(string requestId)
-            => await base.GetAsync<UserInteractionStatistics>($"v2/bot/insight/message/event?requestId={requestId}").ConfigureAwait(false);
+        public async Task<UserInteractionStatistics> GetUserInteractionStatisticsAsync(string requestId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<UserInteractionStatistics>($"v2/bot/insight/message/event?requestId={requestId}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// You can check the per-unit statistics of how users interact with push messages and multicast messages sent from your LINE Official Account.
@@ -56,7 +57,7 @@ namespace Line.Message
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public async Task<StatisticsPerUnit> GetStatisticsPerUnitAsync(string customAggregationUnit, DateOnly from, DateOnly to)
-            => await base.GetAsync<StatisticsPerUnit>($"v2/bot/insight/message/event/aggregation?customAggregationUnit={customAggregationUnit}&from={from.ToString("yyyyMMdd")}&to={to.ToString("yyyyMMdd")}").ConfigureAwait(false);
+        public async Task<StatisticsPerUnit> GetStatisticsPerUnitAsync(string customAggregationUnit, DateOnly from, DateOnly to, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<StatisticsPerUnit>($"v2/bot/insight/message/event/aggregation?customAggregationUnit={customAggregationUnit}&from={from.ToString("yyyyMMdd")}&to={to.ToString("yyyyMMdd")}", getResponseHeaders).ConfigureAwait(false);
     }
 }

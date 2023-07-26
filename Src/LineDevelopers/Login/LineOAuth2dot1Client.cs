@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Line.Login
 {
@@ -25,7 +26,7 @@ namespace Line.Login
         /// <param name="clientSecret">Channel secret</param>
         /// <param name="codeVerifier">A random 43-128 character string consisting of single-byte alphanumeric characters and symbols (e.g. wJKN8qz5t8SSI9lMFhBB6qwNkQBkuPZoCxzRhwLRUo1).</param>
         /// <returns></returns>
-        public async Task<AccessTokenInformation> IssueAccessTokenAsync(string authorizationCode, string redirectUri, string clientId, string clientSecret, string? codeVerifier = null)
+        public async Task<AccessTokenInformation> IssueAccessTokenAsync(string authorizationCode, string redirectUri, string clientId, string clientSecret, string? codeVerifier = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new List<KeyValuePair<string, string>>
             {
@@ -39,7 +40,7 @@ namespace Line.Login
             if (!String.IsNullOrWhiteSpace(codeVerifier))
                 request.Add(new KeyValuePair<string, string>("code_verifier", codeVerifier));
 
-            return await base.PostAsync<AccessTokenInformation>("oauth2/v2.1/token", new FormUrlEncodedContent(request)).ConfigureAwait(false);
+            return await base.PostAsync<AccessTokenInformation>("oauth2/v2.1/token", new FormUrlEncodedContent(request), getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -47,8 +48,8 @@ namespace Line.Login
         /// </summary>
         /// <param name="accessToken">Access token</param>
         /// <returns></returns>
-        public async Task<VerifyAccessToken> VerifyAccessTokenValidityAsync(string accessToken)
-            => await base.GetAsync<VerifyAccessToken>($"oauth2/v2.1/verify?access_token={accessToken}").ConfigureAwait(false);
+        public async Task<VerifyAccessToken> VerifyAccessTokenValidityAsync(string accessToken, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<VerifyAccessToken>($"oauth2/v2.1/verify?access_token={accessToken}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Gets a new access token using a refresh token.
@@ -57,7 +58,7 @@ namespace Line.Login
         /// <param name="clientId">Channel ID</param>
         /// <param name="clientSecret">Channel secret</param>
         /// <returns></returns>
-        public async Task<RefreshAccessToken> RefreshAccessTokenAsync(string refreshToken, string clientId, string clientSecret)
+        public async Task<RefreshAccessToken> RefreshAccessTokenAsync(string refreshToken, string clientId, string clientSecret, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new List<KeyValuePair<string, string>>
             {
@@ -67,7 +68,7 @@ namespace Line.Login
                 new KeyValuePair<string, string>("client_secret", clientSecret)
             };
 
-            return await base.PostAsync<RefreshAccessToken>($"v2/oauth/accessToken", new FormUrlEncodedContent(request)).ConfigureAwait(false);
+            return await base.PostAsync<RefreshAccessToken>($"v2/oauth/accessToken", new FormUrlEncodedContent(request), getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace Line.Login
         /// <param name="clientId">Channel ID</param>
         /// <param name="clientSecret">Channel secret</param>
         /// <returns></returns>
-        public async Task RevokeAccessTokenAsync(string accessToken, string clientId, string clientSecret)
+        public async Task RevokeAccessTokenAsync(string accessToken, string clientId, string clientSecret, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new List<KeyValuePair<string, string>>
             {
@@ -86,7 +87,7 @@ namespace Line.Login
                 new KeyValuePair<string, string>("client_secret", clientSecret)
             };
 
-            await base.PostAsync($"oauth2/v2.1/revoke", new FormUrlEncodedContent(request)).ConfigureAwait(false);
+            await base.PostAsync($"oauth2/v2.1/revoke", new FormUrlEncodedContent(request), getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace Line.Login
         /// <param name="nonce">Use the nonce value provided in the authorization request. Omit if the nonce value was not specified in the authorization request.</param>
         /// <param name="userId">user ID</param>
         /// <returns></returns>
-        public async Task<VerifyIdToken> VerifyIdTokenAsync(string idToken, string clientId, string? nonce = null, string? userId = null)
+        public async Task<VerifyIdToken> VerifyIdTokenAsync(string idToken, string clientId, string? nonce = null, string? userId = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new List<KeyValuePair<string, string>>
             {
@@ -111,7 +112,7 @@ namespace Line.Login
             if (!String.IsNullOrWhiteSpace(userId))
                 request.Add(new KeyValuePair<string, string>("user_id", userId));
 
-            return await base.PostAsync<VerifyIdToken>($"oauth2/v2.1/verify", new FormUrlEncodedContent(request)).ConfigureAwait(false);
+            return await base.PostAsync<VerifyIdToken>($"oauth2/v2.1/verify", new FormUrlEncodedContent(request), getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace Line.Login
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        public async Task<UserInformation> GetUserInformationAsync(string accessToken)
-            => await base.GetAsync<UserInformation>("oauth2/v2.1/userinfo", "Authorization", $"Bearer {accessToken}").ConfigureAwait(false);
+        public async Task<UserInformation> GetUserInformationAsync(string accessToken, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<UserInformation>("oauth2/v2.1/userinfo", "Authorization", $"Bearer {accessToken}", getResponseHeaders).ConfigureAwait(false);
     }
 }

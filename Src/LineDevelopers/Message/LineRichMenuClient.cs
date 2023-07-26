@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace Line.Message
@@ -21,9 +22,9 @@ namespace Line.Message
         /// </summary>
         /// <param name="richMenuObject"></param>
         /// <returns></returns>
-        public async Task<string?> CreateRichMenuAsync(RichMenuObject richMenuObject)
+        public async Task<string?> CreateRichMenuAsync(RichMenuObject richMenuObject, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.PostAsJsonAsync<RichMenuObject, JsonNode>("v2/bot/richmenu", richMenuObject).ConfigureAwait(false);
+            var result = await base.PostAsJsonAsync<RichMenuObject, JsonNode>("v2/bot/richmenu", richMenuObject, getResponseHeaders).ConfigureAwait(false);
             return result["richMenuId"]?.GetValue<string>();
         }
 
@@ -32,8 +33,8 @@ namespace Line.Message
         /// </summary>
         /// <param name="richMenuObject"></param>
         /// <returns></returns>
-        public async Task ValidateRichMenuAsync(RichMenuObject richMenuObject)
-            => await base.PostAsJsonAsync<RichMenuObject>("v2/bot/richmenu/validate", richMenuObject).ConfigureAwait(false);
+        public async Task ValidateRichMenuAsync(RichMenuObject richMenuObject, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsJsonAsync<RichMenuObject>("v2/bot/richmenu/validate", richMenuObject, getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Uploads and attaches an image to a rich menu.
@@ -48,8 +49,8 @@ namespace Line.Message
         /// <param name="streamContent"></param>
         /// <param name="mediaType"></param>
         /// <returns></returns>
-        public async Task UploadRichMenuImageAsync(string richMenuId, StreamContent streamContent, MediaType mediaType)
-            => await base.PostAsync($"https://api-data.line.me/v2/bot/richmenu/{richMenuId}/content", streamContent, mediaType).ConfigureAwait(false);
+        public async Task UploadRichMenuImageAsync(string richMenuId, StreamContent streamContent, MediaType mediaType, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsync($"https://api-data.line.me/v2/bot/richmenu/{richMenuId}/content", streamContent, mediaType, getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Uploads and attaches an image to a rich menu.
@@ -65,13 +66,13 @@ namespace Line.Message
         /// <param name="mediaType"></param>
         /// <returns></returns>
         /// <exception cref="FileNotFoundException"></exception>
-        public async Task UploadRichMenuImageAsync(string richMenuId, string path, MediaType mediaType)
+        public async Task UploadRichMenuImageAsync(string richMenuId, string path, MediaType mediaType, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             if (!File.Exists(path)) throw new FileNotFoundException();
 
             using (StreamContent streamContent = new(new FileStream(path, FileMode.Open)))
             {
-                await this.UploadRichMenuImageAsync(richMenuId, streamContent, mediaType).ConfigureAwait(false);
+                await this.UploadRichMenuImageAsync(richMenuId, streamContent, mediaType, getResponseHeaders).ConfigureAwait(false);
             }
         }
         /// <summary>
@@ -79,8 +80,8 @@ namespace Line.Message
         /// </summary>
         /// <param name="richMenuId">ID of the rich menu with the image to be downloaded</param>
         /// <returns></returns>
-        public async Task<Stream> DownloadRichMenuImageAsync(string richMenuId)
-            => await base.GetStreamAsync($"https://api-data.line.me/v2/bot/richmenu/{richMenuId}/content").ConfigureAwait(false);
+        public async Task<Stream> DownloadRichMenuImageAsync(string richMenuId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetStreamAsync($"https://api-data.line.me/v2/bot/richmenu/{richMenuId}/content", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Downloads an image associated with a rich menu.
@@ -88,9 +89,9 @@ namespace Line.Message
         /// <param name="richMenuId">ID of the rich menu with the image to be downloaded</param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public async Task DownloadRichMenuImageAsync(string richMenuId, string path)
+        public async Task DownloadRichMenuImageAsync(string richMenuId, string path, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            using (var result = await this.DownloadRichMenuImageAsync(richMenuId).ConfigureAwait(false))
+            using (var result = await this.DownloadRichMenuImageAsync(richMenuId, getResponseHeaders).ConfigureAwait(false))
             {
                 var currentPath = Path.GetDirectoryName(path);
                 var directory = new DirectoryInfo(currentPath);
@@ -108,10 +109,9 @@ namespace Line.Message
         /// Gets a list of the rich menu response object of all rich menus created by Create a rich menu.
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<RichMenuResponseObject>> GetRichMenuListAsync()
+        public async Task<IList<RichMenuResponseObject>> GetRichMenuListAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<RichMenuList>("v2/bot/richmenu/list").ConfigureAwait(false);
-
+            var result = await base.GetAsync<RichMenuList>("v2/bot/richmenu/list", getResponseHeaders).ConfigureAwait(false);
             return result.RichMenus;
         }
  
@@ -120,16 +120,16 @@ namespace Line.Message
         /// </summary>
         /// <param name="richMenuId">ID of a rich menu</param>
         /// <returns></returns>
-        public async Task<RichMenuResponseObject> GetRichMenuAsync(string richMenuId)
-            => await base.GetAsync<RichMenuResponseObject>($"v2/bot/richmenu/{richMenuId}").ConfigureAwait(false);
+        public async Task<RichMenuResponseObject> GetRichMenuAsync(string richMenuId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<RichMenuResponseObject>($"v2/bot/richmenu/{richMenuId}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Deletes a rich menu.
         /// </summary>
         /// <param name="richMenuId">ID of a rich menu</param>
         /// <returns></returns>
-        public async Task DeleteRichMenuAsync(string richMenuId)
-            => await base.DeleteAsync($"v2/bot/richmenu/{richMenuId}").ConfigureAwait(false);
+        public async Task DeleteRichMenuAsync(string richMenuId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.DeleteAsync($"v2/bot/richmenu/{richMenuId}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Sets the default rich menu. The default rich menu is displayed to all users who have added your LINE Official Account as a friend and are not linked to any per-user rich menu. 
@@ -137,18 +137,18 @@ namespace Line.Message
         /// </summary>
         /// <param name="richMenuId">ID of a rich menu</param>
         /// <returns></returns>
-        public async Task SetDefaultRichMenuAsync(string richMenuId)
+        public async Task SetDefaultRichMenuAsync(string richMenuId, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            await base.PostAsync($"v2/bot/user/all/richmenu/{richMenuId}").ConfigureAwait(false);
+            await base.PostAsync($"v2/bot/user/all/richmenu/{richMenuId}", getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Gets the ID of the default rich menu set with the Messaging API.
         /// </summary>
         /// <returns>ID of a rich menu</returns>
-        public async Task<string?> GetDefaultRichMenuIdAsync()
+        public async Task<string?> GetDefaultRichMenuIdAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<JsonNode>($"v2/bot/user/all/richmenu").ConfigureAwait(false);
+            var result = await base.GetAsync<JsonNode>($"v2/bot/user/all/richmenu", getResponseHeaders).ConfigureAwait(false);
             return result["richMenuId"]?.GetValue<string>();
         }
 
@@ -156,8 +156,8 @@ namespace Line.Message
         /// Cancels the default rich menu set with the Messaging API.
         /// </summary>
         /// <returns></returns>
-        public async Task CancelDefaultRichMenuAsync()
-            => await base.DeleteAsync("v2/bot/user/all/richmenu").ConfigureAwait(false);
+        public async Task CancelDefaultRichMenuAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.DeleteAsync("v2/bot/user/all/richmenu", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Creates a rich menu alias.
@@ -165,7 +165,7 @@ namespace Line.Message
         /// <param name="richMenuId">The rich menu ID to be associated with the rich menu alias.</param>
         /// <param name="richMenuAliasId">Rich menu alias ID, which can be any ID, unique for each channel.</param>
         /// <returns></returns>
-        public async Task CreateRichMenuAliasAsync(string richMenuId, string richMenuAliasId)
+        public async Task CreateRichMenuAliasAsync(string richMenuId, string richMenuAliasId, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new RichMenuAlias()
             {
@@ -173,7 +173,7 @@ namespace Line.Message
                 RichMenuAliasId = richMenuAliasId
             };
 
-            await base.PostAsJsonAsync("v2/bot/richmenu/alias", request).ConfigureAwait(false);
+            await base.PostAsJsonAsync("v2/bot/richmenu/alias", request, getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -181,8 +181,8 @@ namespace Line.Message
         /// </summary>
         /// <param name="richMenuAliasId">Rich menu alias ID that you want to delete.</param>
         /// <returns></returns>
-        public async Task DeleteRichMenuAliasAsync(string richMenuAliasId)
-            => await base.DeleteAsync($"v2/bot/richmenu/alias/{richMenuAliasId}").ConfigureAwait(false);
+        public async Task DeleteRichMenuAliasAsync(string richMenuAliasId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.DeleteAsync($"v2/bot/richmenu/alias/{richMenuAliasId}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Updates rich menu aliases. You can specify an existing rich menu alias to modify the associated rich menu.
@@ -190,11 +190,11 @@ namespace Line.Message
         /// <param name="richMenuId">The rich menu ID to be associated with the rich menu alias.</param>
         /// <param name="richMenuAliasId">The rich menu alias ID you want to update.</param>
         /// <returns></returns>
-        public async Task UpdateRichMenuAliasAsync(string richMenuId, string richMenuAliasId)
+        public async Task UpdateRichMenuAliasAsync(string richMenuId, string richMenuAliasId, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new JsonObject() { ["richMenuId"] = richMenuId };
 
-            await base.PostAsJsonAsync($"v2/bot/richmenu/alias/{richMenuAliasId}", request).ConfigureAwait(false);
+            await base.PostAsJsonAsync($"v2/bot/richmenu/alias/{richMenuAliasId}", request, getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -202,17 +202,16 @@ namespace Line.Message
         /// </summary>
         /// <param name="richMenuAliasId">The rich menu alias ID whose information you want to obtain.</param>
         /// <returns></returns>
-        public async Task<RichMenuAlias> GetRichMenuAliasInformationAsync(string richMenuAliasId)
-            => await base.GetAsync<RichMenuAlias>($"v2/bot/richmenu/alias/{richMenuAliasId}").ConfigureAwait(false);
+        public async Task<RichMenuAlias> GetRichMenuAliasInformationAsync(string richMenuAliasId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<RichMenuAlias>($"v2/bot/richmenu/alias/{richMenuAliasId}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Gets the rich menu alias list.
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<RichMenuAlias>> GetListOfRichMenuAliasAsync()
+        public async Task<IList<RichMenuAlias>> GetListOfRichMenuAliasAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<RichMenuAliasList>("v2/bot/richmenu/alias/list").ConfigureAwait(false);
-
+            var result = await base.GetAsync<RichMenuAliasList>("v2/bot/richmenu/alias/list", getResponseHeaders).ConfigureAwait(false);
             return result.Aliases;
         }
 
@@ -223,8 +222,8 @@ namespace Line.Message
         /// <param name="userId">User ID</param>
         /// <param name="richMenuId">ID of a rich menu</param>
         /// <returns></returns>
-        public async Task LinkRichMenuToUserAsync(string userId, string richMenuId)
-            => await base.PostAsync($"v2/bot/user/{userId}/richmenu/{richMenuId}").ConfigureAwait(false);
+        public async Task LinkRichMenuToUserAsync(string userId, string richMenuId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.PostAsync($"v2/bot/user/{userId}/richmenu/{richMenuId}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Links a rich menu to multiple users.
@@ -232,7 +231,7 @@ namespace Line.Message
         /// <param name="richMenuId">ID of a rich menu</param>
         /// <param name="userIds">Array of user IDs. Found in the source object of webhook event objects. Do not use the LINE ID used in LINE.Max: 500 user IDs</param>
         /// <returns></returns>
-        public async Task LinkRichMenuToMultipleUsersAsync(string richMenuId, IList<string> userIds)
+        public async Task LinkRichMenuToMultipleUsersAsync(string richMenuId, IList<string> userIds, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new LinkRichMenuToMultipleUsers()
             {
@@ -240,7 +239,7 @@ namespace Line.Message
                 UserIds = userIds
             };
 
-            await base.PostAsJsonAsync("v2/bot/richmenu/bulk/link", request).ConfigureAwait(false);
+            await base.PostAsJsonAsync("v2/bot/richmenu/bulk/link", request, getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -248,10 +247,9 @@ namespace Line.Message
         /// </summary>
         /// <param name="userId">User ID. Found in the source object of webhook event objects. Do not use the LINE ID used in LINE.</param>
         /// <returns>ID of a rich menu</returns>
-        public async Task<string?> GetRichMenuIdOfUserAsync(string userId)
+        public async Task<string?> GetRichMenuIdOfUserAsync(string userId, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<JsonNode>($"v2/bot/user/{userId}/richmenu").ConfigureAwait(false);
-
+            var result = await base.GetAsync<JsonNode>($"v2/bot/user/{userId}/richmenu", getResponseHeaders).ConfigureAwait(false);
             return result["richMenuId"]?.GetValue<string>();
         }
 
@@ -261,8 +259,8 @@ namespace Line.Message
         /// <param name="userId">User ID. Found in the source object of webhook event objects. 
         /// Do not use the LINE ID used in LINE.</param>
         /// <returns></returns>
-        public async Task UnlinkRichMenuFromUserAsync(string userId)
-            => await base.DeleteAsync($"v2/bot/user/{userId}/richmenu").ConfigureAwait(false);
+        public async Task UnlinkRichMenuFromUserAsync(string userId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.DeleteAsync($"v2/bot/user/{userId}/richmenu", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Unlinks rich menus from multiple users.
@@ -272,11 +270,11 @@ namespace Line.Message
         /// Do not use the LINE ID used in LINE. Max: 500 user IDs
         /// </param>
         /// <returns></returns>
-        public async Task UnlinkRichMenusFromMultipleUsersAsync(IList<string> userIds)
+        public async Task UnlinkRichMenusFromMultipleUsersAsync(IList<string> userIds, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new RichMenuUserList() { UserIds = userIds };
 
-            await base.PostAsJsonAsync("v2/bot/richmenu/bulk/unlink", request).ConfigureAwait(false);
+            await base.PostAsJsonAsync("v2/bot/richmenu/bulk/unlink", request, getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -285,7 +283,7 @@ namespace Line.Message
         /// <param name="richMenuOperationObjects"></param>
         /// <param name="resumeRequestKey"></param>
         /// <returns></returns>
-        public async Task ReplaceOrUnlinkTheLinkedRichMenusInBatchesAsync(IList<RichMenuOperationObject> richMenuOperationObjects, string? resumeRequestKey = null)
+        public async Task ReplaceOrUnlinkTheLinkedRichMenusInBatchesAsync(IList<RichMenuOperationObject> richMenuOperationObjects, string? resumeRequestKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new RichMenuBatchControl()
             {
@@ -293,17 +291,17 @@ namespace Line.Message
                 ResumeRequestKey = resumeRequestKey
             };
 
-            await base.PostAsJsonAsync("v2/bot/richmenu/batch", request).ConfigureAwait(false);
+            await base.PostAsJsonAsync("v2/bot/richmenu/batch", request, getResponseHeaders).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Get the status of Replace or unlink a linked rich menus in batches.
         /// </summary>
         /// <returns></returns>
-        public async Task<StatusOfRichMenuBatchControl> GetStatusOfRichMenuBatchControlAsync(string requestId)
-            => await base.GetAsync<StatusOfRichMenuBatchControl>($"v2/bot/richmenu/progress/batch?requestId={requestId}").ConfigureAwait(false);
+        public async Task<StatusOfRichMenuBatchControl> GetStatusOfRichMenuBatchControlAsync(string requestId, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<StatusOfRichMenuBatchControl>($"v2/bot/richmenu/progress/batch?requestId={requestId}", getResponseHeaders).ConfigureAwait(false);
 
-        public async Task ValidateRequestOfRichMenuBatchControlAsync(IList<RichMenuOperationObject> richMenuOperationObjects, string? resumeRequestKey = null)
+        public async Task ValidateRequestOfRichMenuBatchControlAsync(IList<RichMenuOperationObject> richMenuOperationObjects, string? resumeRequestKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new RichMenuBatchControl()
             {
@@ -311,7 +309,7 @@ namespace Line.Message
                 ResumeRequestKey = resumeRequestKey
             };
 
-            await base.PostAsJsonAsync("v2/bot/richmenu/validate/batch", request).ConfigureAwait(false);
+            await base.PostAsJsonAsync("v2/bot/richmenu/validate/batch", request, getResponseHeaders).ConfigureAwait(false);
         }
     }
 }

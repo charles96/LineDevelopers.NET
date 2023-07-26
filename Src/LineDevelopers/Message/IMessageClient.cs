@@ -1,25 +1,247 @@
-﻿namespace Line.Message
+﻿using System.Net.Http.Headers;
+
+namespace Line.Message
 {
     public interface IMessageClient
     {
-        public Task SendReplyMessageAsync(string replyToken, IMessage message, bool? notificationDisabled = null);
-        public Task SendReplyMessageAsync(string replyToken, IList<IMessage> messages, bool? notificationDisabled = null);
-        public Task SendPushMessageAsync(string to, IList<IMessage> messages, bool? notificationDisabled = null, string? xLineRetryKey = null);
-        public Task SendPushMessageAsync(string to, IMessage message, bool? notificationDisabled = null, string? xLineRetryKey = null);
-        public Task SendMulticastMessageAsync(IList<string> to, IList<IMessage> messages, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null);
-        public Task SendMulticastMessageAsync(IList<string> to, IMessage message, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null);
-        public Task SendNarrowcastMessageAsync(IList<IMessage> messages, IRecipientObject? recipient = null, NarrowcastMessageFilter? filter = null, NarrowcastLimit? limit = null, bool? notificationDisabled = null, string? xLineRetryKey = null);
-        public Task SendNarrowcastMessageAsync(IMessage message, IRecipientObject? recipient = null, NarrowcastMessageFilter? filter = null, NarrowcastLimit? limit = null, bool? notificationDisabled = null, string? xLineRetryKey = null);
-        public Task SendBroadcastMessageAsync(IList<IMessage> messages, bool? notificationDisabled = null, string? xLineRetryKey = null);
-        public Task SendBroadcastMessageAsync(IMessage message, bool? notificationDisabled = null, string? xLineRetryKey = null);
-        public Task<NarrowcastMessageStatus> GetNarrowcastMessageStatusAsync(string requestId);
-        public Task<TargetLimitForSendingMessagesThisMonth> GetTheTargetLimitForSendingMessagesThisMonthAsync();
-        public Task<int> GetNumberOfMessagesSentThisMonthAsync();
-        public Task<NumberOfSentMessages> GetNumberOfSentMessagesAsync(SendType sendType, DateOnly date);
-        public Task ValidateMessageObjectsOfMessageAsync(SendType sendType, IList<IMessage> messages);
-        public Task ValidateMessageObjectsOfMessageAsync(SendType sendType, IMessage message);
-        public Task<int> GetNumberOfUnitsUsedThisMonthAsync();
-        public Task<NameListOfUnitsUsedThisMonth> GetNameListOfUnitsUsedThisMonthAsync(int limit = 100);
-        public Task<NameListOfUnitsUsedThisMonth> GetNameListOfUnitsUsedThisMonthAsync(int limit, string start);
+        /// <summary>
+        /// Sends a reply message in response to an event from a user, group chat, or multi-person chat. To send reply messages, you need a reply token which is included in the webhook event object.
+        /// </summary>
+        /// <param name="replyToken">Reply token received via webhook</param>
+        /// <param name="message">Messages to send</param>
+        /// <param name="notificationDisabled"></param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendReplyMessageAsync(string replyToken, IMessage message, bool? notificationDisabled = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Sends a reply message in response to an event from a user, group chat, or multi-person chat. To send reply messages, you need a reply token which is included in the webhook event object.
+        /// </summary>
+        /// <param name="replyToken">Reply token received via webhook</param>
+        /// <param name="messages">Messages to send. Max: 5</param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).
+        /// </param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendReplyMessageAsync(string replyToken, IList<IMessage> messages, bool? notificationDisabled = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Sends a message to a user, group chat, or multi-person chat at any time.
+        /// </summary>
+        /// <param name="to">ID of the target recipient.</param>
+        /// <param name="messages">Messages to send. Max: 5</param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).
+        /// </param>
+        /// <param name="customAggregationUnits">Name of aggregation unit. Case-sensitive. For example, Promotion_a and Promotion_A are regarded as different unit names.</param>
+        /// <param name="xLineRetryKey">Retry key. Specifies the UUID in hexadecimal format (e.g., 123e4567-e89b-12d3-a456-426614174000) generated by any method.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendPushMessageAsync(string to, IList<IMessage> messages, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Sends a message to a user, group chat, or multi-person chat at any time.
+        /// </summary>
+        /// <param name="to">ID of the target recipient.</param>
+        /// <param name="message">Messages to send.</param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).
+        /// </param>
+        /// <param name="customAggregationUnits">Name of aggregation unit. Case-sensitive. For example, Promotion_a and Promotion_A are regarded as different unit names.</param>
+        /// <param name="xLineRetryKey">Retry key. Specifies the UUID in hexadecimal format (e.g., 123e4567-e89b-12d3-a456-426614174000) generated by any method.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendPushMessageAsync(string to, IMessage message, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// An API that efficiently sends the same message to multiple user IDs. You can't send messages to group chats or multi-person chats.
+        /// </summary>
+        /// <param name="to">Array of user IDs. Use userId values which are returned in webhook event objects. Do not use LINE IDs found on LINE.</param>
+        /// <param name="messages">Messages to send. Max:5</param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).
+        /// </param>
+        /// <param name="customAggregationUnits">Name of aggregation unit. Case-sensitive. For example, Promotion_a and Promotion_A are regarded as different unit names.</param>
+        /// <param name="xLineRetryKey">Retry key. Specifies the UUID in hexadecimal format (e.g., 123e4567-e89b-12d3-a456-426614174000) generated by any method</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendMulticastMessageAsync(IList<string> to, IList<IMessage> messages, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// An API that efficiently sends the same message to multiple user IDs. You can't send messages to group chats or multi-person chats.
+        /// </summary>
+        /// <param name="to">Array of user IDs. Use userId values which are returned in webhook event objects. Do not use LINE IDs found on LINE.</param>
+        /// <param name="message">Messages to send.</param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).
+        /// </param>
+        /// <param name="customAggregationUnits">Name of aggregation unit. Case-sensitive. For example, Promotion_a and Promotion_A are regarded as different unit names.</param>
+        /// <param name="xLineRetryKey">Retry key. Specifies the UUID in hexadecimal format (e.g., 123e4567-e89b-12d3-a456-426614174000) generated by any method</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendMulticastMessageAsync(IList<string> to, IMessage message, bool? notificationDisabled = null, IList<string>? customAggregationUnits = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Sends a message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages can't be sent to group chats or multi-person chats.
+        /// </summary>
+        /// <param name="messages">Messages to send. Max: 5</param>
+        /// <param name="recipient">
+        /// Recipient object. You can use up to a combined total of 10 audiences and request IDs of the narrowcast messages previously sent to specify message recipients. 
+        /// There is no upper limit on the number of operator objects that you can specify.
+        /// If this is omitted, messages will be sent to all users who have added your LINE Official Account as a friend.
+        /// </param>
+        /// <param name="filter">
+        /// Demographic filter object. You can use friends' attributes to filter the list of recipients.
+        /// If this is omitted, messages are sent to everyone—including users with attribute values of "unknown".
+        /// </param>
+        /// <param name="limit">
+        /// The maximum number of narrowcast messages to send. 
+        /// </param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or on their device).
+        /// </param>
+        /// <param name="xLineRetryKey">Retry key. Specifies the UUID in hexadecimal format (e.g., 123e4567-e89b-12d3-a456-426614174000) generated by any method.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendNarrowcastMessageAsync(IList<IMessage> messages, IRecipientObject? recipient = null, NarrowcastMessageFilter? filter = null, NarrowcastLimit? limit = null, bool? notificationDisabled = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Sends a message to multiple users. You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences). Messages can't be sent to group chats or multi-person chats.
+        /// </summary>
+        /// <param name="message">Messages to send.</param>
+        /// <param name="recipient">
+        /// Recipient object. You can use up to a combined total of 10 audiences and request IDs of the narrowcast messages previously sent to specify message recipients. 
+        /// There is no upper limit on the number of operator objects that you can specify.
+        /// If this is omitted, messages will be sent to all users who have added your LINE Official Account as a friend.
+        /// </param>
+        /// <param name="filter">
+        /// Demographic filter object. You can use friends' attributes to filter the list of recipients.
+        /// If this is omitted, messages are sent to everyone—including users with attribute values of "unknown".
+        /// </param>
+        /// <param name="limit">
+        /// The maximum number of narrowcast messages to send. 
+        /// </param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or on their device).
+        /// </param>
+        /// <param name="xLineRetryKey">Retry key. Specifies the UUID in hexadecimal format (e.g., 123e4567-e89b-12d3-a456-426614174000) generated by any method.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendNarrowcastMessageAsync(IMessage message, IRecipientObject? recipient = null, NarrowcastMessageFilter? filter = null, NarrowcastLimit? limit = null, bool? notificationDisabled = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Sends a message to all users who are friends with your LINE Official Account at any time.
+        /// </summary>
+        /// <param name="messages">Messages to send. Max:5</param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).
+        /// </param>
+        /// <param name="xLineRetryKey">Retry key. Specifies the UUID in hexadecimal format (e.g., 123e4567-e89b-12d3-a456-426614174000) generated by any method.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendBroadcastMessageAsync(IList<IMessage> messages, bool? notificationDisabled = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Sends a message to all users who are friends with your LINE Official Account at any time.
+        /// </summary>
+        /// <param name="message">Messages to send.</param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).
+        /// </param>
+        /// <param name="xLineRetryKey">Retry key. Specifies the UUID in hexadecimal format (e.g., 123e4567-e89b-12d3-a456-426614174000) generated by any method.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task SendBroadcastMessageAsync(IMessage message, bool? notificationDisabled = null, string? xLineRetryKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Gets the status of a narrowcast message.
+        /// </summary>
+        /// <param name="requestId">The narrowcast message's request ID. Each Messaging API request has a request ID. Find it in the response headers.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task<NarrowcastMessageStatus> GetNarrowcastMessageStatusAsync(string requestId, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Gets the target limit for sending messages in the current month. The total number of the free messages and the additional messages is returned.
+        /// </summary>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task<TargetLimitForSendingMessagesThisMonth> GetTheTargetLimitForSendingMessagesThisMonthAsync(Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Gets the number of messages sent in the current month.
+        /// </summary>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task<int> GetNumberOfMessagesSentThisMonthAsync(Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Gets the number of messages sent with the Send(Reply,Push,Multicast,Narrowcast,Broadcast)MessageAsync method.
+        /// /// </summary>
+        /// <param name="sendType">Send Type</param>
+        /// <param name="date">Date the messages were sent</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task<NumberOfSentMessages> GetNumberOfSentMessagesAsync(SendType sendType, DateOnly date, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// You can validate that an array of message objects is valid as a value for the messages property of the request body for the Send reply message endpoint. This endpoint doesn't validate the values of the properties other than the messages property.
+        /// </summary>
+        /// <param name="sendType">Send Type</param>
+        /// <param name="messages">Array of message objects to validate</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task ValidateMessageObjectsOfMessageAsync(SendType sendType, IList<IMessage> messages, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// You can validate that an array of message objects is valid as a value for the messages property of the request body for the Send reply message endpoint. This endpoint doesn't validate the values of the properties other than the messages property.
+        /// </summary>
+        /// <param name="sendType">Send Type</param>
+        /// <param name="message">message objects to validate</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task ValidateMessageObjectsOfMessageAsync(SendType sendType, IMessage message, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Get the number of aggregation units used this month.
+        /// </summary>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task<int> GetNumberOfUnitsUsedThisMonthAsync(Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// You can get the name list of units used this month for statistics aggregation.
+        /// </summary>
+        /// <param name="limit">
+        /// The maximum number of aggregation units you can get per request. 
+        /// The default value is 100
+        /// Max value: 100
+        /// </param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task<NameListOfUnitsUsedThisMonth> GetNameListOfUnitsUsedThisMonthAsync(int limit = 100, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// You can get the name list of units used this month for statistics aggregation.
+        /// </summary>
+        /// <param name="limit">
+        /// The maximum number of aggregation units you can get per request. 
+        /// The default value is 100
+        /// Max value: 100
+        /// </param>
+        /// <param name="start">Value of the continuation token found in the next property of the JSON object returned in the response. If you can't get all the aggregation units in one request, include this parameter to get the remaining array.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
+        public Task<NameListOfUnitsUsedThisMonth> GetNameListOfUnitsUsedThisMonthAsync(int limit, string start, Action<HttpResponseHeaders>? getResponseHeaders = null);
     }
 }

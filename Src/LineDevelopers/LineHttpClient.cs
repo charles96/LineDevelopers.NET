@@ -41,29 +41,30 @@ namespace Line
 
         protected abstract Task EnsureSuccessStatusCodeAsync(HttpResponseMessage? httpResponseMessage);
 
-        protected async Task GetAsync(string endpoint)
+        protected async Task GetAsync(string endpoint, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
             }
         }
 
-        protected async Task<TResult> GetAsync<TResult>(string endpoint)
+        protected async Task<TResult> GetAsync<TResult>(string endpoint, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             TResult result;
 
             using (var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
-
                 result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
             }
 
             return result;
         }
 
-        protected async Task<TResult> GetAsync<TResult>(string endpoint, HttpContent httpContent)
+        protected async Task<TResult> GetAsync<TResult>(string endpoint, HttpContent httpContent, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             TResult result;
 
@@ -73,15 +74,16 @@ namespace Line
 
                 using (var response = await _httpClient.SendAsync(request).ConfigureAwait(false))
                 {
+                    GetHeaders(response, getResponseHeaders);
                     await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
-
                     result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
                 }
             }
 
             return result;
         }
-        protected async Task<TResult> GetAsync<TResult>(string endpoint, string? headerName = null, string? headerValue = null)
+
+        protected async Task<TResult> GetAsync<TResult>(string endpoint, string? headerName = null, string? headerValue = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             TResult result;
 
@@ -91,8 +93,8 @@ namespace Line
 
                 using (var response = await _httpClient.SendAsync(body).ConfigureAwait(false))
                 {
+                    GetHeaders(response, getResponseHeaders);
                     await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
-
                     result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
                 }
             }
@@ -100,15 +102,16 @@ namespace Line
             return result;
         }
 
-        protected async Task<Stream> GetStreamAsync(string endpoint)
+        protected async Task<Stream> GetStreamAsync(string endpoint, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
+            GetHeaders(response, getResponseHeaders);
             await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
 
             return await response.Content?.ReadAsStreamAsync();
         }
 
-        protected async Task PostAsync(string endpoint, StreamContent streamContent, MediaType mediaType)
+        protected async Task PostAsync(string endpoint, StreamContent streamContent, MediaType mediaType, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var request = new HttpRequestMessage(HttpMethod.Post, endpoint))
             {
@@ -118,25 +121,28 @@ namespace Line
 
                 using (var response = await _httpClient.SendAsync(request).ConfigureAwait(false))
                 {
+                    GetHeaders(response, getResponseHeaders);
                     await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
                 }
             }
         }
 
-        protected async Task PostAsync(string endpoint)
+        protected async Task PostAsync(string endpoint, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var response = await _httpClient.PostAsync(endpoint, null).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
             }
         }
 
-        protected async Task<TResult> PostAsync<TResult>(string endpoint, HttpContent request)
+        protected async Task<TResult> PostAsync<TResult>(string endpoint, HttpContent request, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             TResult result;
 
             using (var response = await _httpClient.PostAsync(endpoint, request).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
 #if DEBUG
                 await File.WriteAllTextAsync(@"c:\temp\aaa.txt", await response.Content?.ReadAsStringAsync());
@@ -148,23 +154,25 @@ namespace Line
             return result;
         }
 
-        protected async Task PostAsync(string endpoint, HttpContent request)
+        protected async Task PostAsync(string endpoint, HttpContent request, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var response = await _httpClient.PostAsync(endpoint, request).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
             }
         }
 
-        protected async Task PostAsJsonAsync<TRequest>(string endpoint, TRequest request)
+        protected async Task PostAsJsonAsync<TRequest>(string endpoint, TRequest request, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var response = await _httpClient.PostAsJsonAsync<TRequest>(endpoint, request, _jsonSerializerOptions).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
             }
         }
 
-        protected async Task PostAsJsonAsync<TRequest>(string endpoint, TRequest request, string? headerName = null, string? headerValue = null)
+        protected async Task PostAsJsonAsync<TRequest>(string endpoint, TRequest request, string? headerName = null, string? headerValue = null, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var body = new HttpRequestMessage(HttpMethod.Post, endpoint))
             {
@@ -175,39 +183,47 @@ namespace Line
 
                 using (var response = await _httpClient.SendAsync(body).ConfigureAwait(false))
                 {
+                    GetHeaders(response, getResponseHeaders);
                     await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
                 }
             }
         }
 
-        protected async Task<TResult> PostAsJsonAsync<TRequest,TResult>(string endpoint, TRequest request)
+        protected async Task<TResult> PostAsJsonAsync<TRequest,TResult>(string endpoint, TRequest request, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             TResult result;
 
             using (var response = await _httpClient.PostAsJsonAsync<TRequest>(endpoint, request, _jsonSerializerOptions).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
-
                 result = await response.Content?.ReadFromJsonAsync<TResult>(_jsonSerializerOptions);
             }
 
             return result;
         }
 
-        protected async Task DeleteAsync(string endpoint)
+        protected async Task DeleteAsync(string endpoint, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var response = await _httpClient.DeleteAsync(endpoint).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
             }
         }
 
-        protected async Task PutAsync<TRequest>(string endpoint, TRequest request)
+        protected async Task PutAsync<TRequest>(string endpoint, TRequest request, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var response = await _httpClient.PutAsJsonAsync<TRequest>(endpoint, request, _jsonSerializerOptions).ConfigureAwait(false))
             {
+                GetHeaders(response, getResponseHeaders);
                 await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
             }
+        }
+
+        private void GetHeaders(HttpResponseMessage httpResponseMessage, Action<HttpResponseHeaders>? getResponseHeaders = null)
+        {
+            if (getResponseHeaders != null) getResponseHeaders(httpResponseMessage.Headers);
         }
 
         public void Dispose()

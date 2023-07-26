@@ -18,6 +18,14 @@ namespace LineDevelopers.Webhook.Tests.Controllers
             var config = JsonSerializer.Deserialize<TestConfig>(json);
 
             _lineMessagingClient = new LineMessagingClient(config.ChannelAccessToken);
+
+        }
+
+        private async Task SomeOtherMethod(string aaa, string bbb, Action<string>? someResult = null)
+        {
+            await Task.Delay(1);
+
+            if (someResult != null) someResult("heloo");
         }
 
         [HttpPost("callback")]
@@ -69,6 +77,18 @@ namespace LineDevelopers.Webhook.Tests.Controllers
 
         protected override async Task OnMessageEventAsync(MessageEventObject messageEventObject)
         {
+            string key = "";
+
+            await SomeOtherMethod("ddd", "ddd");
+
+
+            await SomeOtherMethod("ddd", "ddd", (o) => {
+                key = o;
+            });
+
+            var aaa = key;
+
+
             IMessage message;
 
             switch (messageEventObject.Message)

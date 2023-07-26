@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Line.Message
 {
@@ -19,8 +20,8 @@ namespace Line.Message
         /// Gets a bot's basic information.
         /// </summary>
         /// <returns></returns>
-        public async Task<BotInformation> GetBotInformationAsync()
-            => await base.GetAsync<BotInformation>($"v2/bot/info").ConfigureAwait(false);
+        public async Task<BotInformation> GetBotInformationAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<BotInformation>($"v2/bot/info", getResponseHeaders).ConfigureAwait(false);
 
     }
 }

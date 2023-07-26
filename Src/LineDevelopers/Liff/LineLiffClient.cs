@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Net.Http.Headers;
+using System.Text.Json.Nodes;
 
 namespace Line.Liff
 {
@@ -16,7 +17,8 @@ namespace Line.Liff
                                                            Features? features = null,
                                                            string? permanentLinkPattern = null,
                                                            IList<ScopeType>? scope = null,
-                                                           BotPromptType? botPrompt = null)
+                                                           BotPromptType? botPrompt = null,
+                                                           Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new LiffApp()
             {
@@ -39,7 +41,8 @@ namespace Line.Liff
                                                     Features? features = null,
                                                     string? permanentLinkPattern = null,
                                                     IList<ScopeType>? scope = null,
-                                                    BotPromptType? botPrompt = null)
+                                                    BotPromptType? botPrompt = null,
+                                                    Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             var request = new LiffApp()
             {
@@ -51,15 +54,15 @@ namespace Line.Liff
                 BotPrompt = botPrompt
             };
 
-            await base.PutAsync<LiffApp>($"liff/v1/apps/{liffId}", request).ConfigureAwait(false);
+            await base.PutAsync<LiffApp>($"liff/v1/apps/{liffId}", request, getResponseHeaders: getResponseHeaders).ConfigureAwait(false);
         }
         /// <summary>
         /// Gets information on all the LIFF apps added to the channel.
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<LiffAppInformation>> GetAllLiffAppsAsync()
+        public async Task<IList<LiffAppInformation>> GetAllLiffAppsAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<LiffApps>("liff/v1/apps").ConfigureAwait(false);
+            var result = await base.GetAsync<LiffApps>("liff/v1/apps", getResponseHeaders: getResponseHeaders).ConfigureAwait(false);
             return result.Apps;
         }
 

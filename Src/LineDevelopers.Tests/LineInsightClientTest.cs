@@ -15,7 +15,6 @@ namespace LineDevelopers.Tests
                 var result = await _client.Insight.GetNumberOfMessageDeliveriesAsync(new DateOnly(1977, 10, 31));
 
                 That(result.Status, Is.EqualTo(CalculationStatus.OutOfService));
-
             });
         }
 
