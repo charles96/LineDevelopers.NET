@@ -19,6 +19,7 @@ namespace Line.Message
         /// <summary>
         /// Gets a bot's basic information.
         /// </summary>
+        /// <param name="getResponseHeaders">Response Headers</param>
         /// <returns></returns>
         public async Task<BotInformation> GetBotInformationAsync(Action<HttpResponseHeaders>? getResponseHeaders = null)
             => await base.GetAsync<BotInformation>($"v2/bot/info", getResponseHeaders).ConfigureAwait(false);

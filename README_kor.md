@@ -1,10 +1,12 @@
 ﻿[![dotnet version](https://img.shields.io/badge/.NET-7.x-blue)](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-7)
 [![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
 [![Nuget downloads](https://img.shields.io/nuget/dt/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
+* [English](https://github.com/charles96/LineDevelopers.Net/blob/master/README_kor.md)
 
 # LINE Developers.Net
 이 라이브러리는 [LINE Developers](https://developers.line.biz/en/docs/)의 API를 C# 라이브러리로 개발한 것이며, LINE Developers와 관련없는 비공식 라이브러리 임을 밝힙니다.
 한국에서는 지원하지 않거나 유료 기반의 기능들은 테스트를 완료하지 못했습니다. 참고하시기 바라며 LINE Messenger 기반 메시지 발송 또는 챗봇을 개발하시는 분들께 도움이 되길 바랍니다.
+
 * install from nuget
 ```powershell
 Install-Package LineDevelopers 
@@ -15,39 +17,8 @@ Install-Package LineDevelopers
 * [webhook quick start](https://github.com/charles96/LineDevelopers.Net/blob/master/WEBHOOK_kor.md)
 
 # 2. 라이브러리 소개
-## 2-1. LineChannelAccessTokenClient class
-* [Channel access token](https://developers.line.biz/en/reference/messaging-api/#channel-access-token)
 
-```csharp
-using Line;
-
-using (var client = new LineChannelAccessTokenClient())
-{
-    try
-    {
-        var result = await client.IssueShortLivedChannelAccessTokenAsync("client id", "secret");
-
-        await client.VerifyShortLonglivedChannelAccessTokenAsync(result.AccessToken);
-    }
-    catch (LineCredentialException ex)
-    {
-        Console.WriteLine($"error : {ex.Message}");
-        Console.WriteLine($"error_description : {ex.Detail}");
-    }
-}
-```
-
-|LINE Developers|Methods|Tested|
-|---|---|---|
-|[Issue channel access token v2.1](https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token-v2-1)|IssueChannelAccessTokenAsync|❌|
-|[Verify the validity of the channel access token v2.1](https://developers.line.biz/en/reference/messaging-api/#verfiy-channel-access-token-v2-1)|VerifyChannelAccessTokenAsync|✔|
-|[Get all valid channel access token key IDs v2.1](https://developers.line.biz/en/reference/messaging-api/#get-all-valid-channel-access-token-key-ids-v2-1)|GetAllValidChannelAccessTokenKeyIDsAsync|❌|
-|[Revoke channel access token v2.1](https://developers.line.biz/en/reference/messaging-api/#revoke-channel-access-token-v2-1)|RevokeChannelAccessTokenAsync|❌|
-|[Issue short-lived channel access token](https://developers.line.biz/en/reference/messaging-api/#issue-shortlived-channel-access-token)|IssueShortLivedChannelAccessTokenAsync|✔|
-|[Verify the validity of short-lived and long-lived channel access tokens](https://developers.line.biz/en/reference/messaging-api/#verfiy-channel-access-token)|VerifyShortLonglivedChannelAccessTokenAsync|✔|
-|[Revoke short-lived or long-lived channel access token](https://developers.line.biz/en/reference/messaging-api/#revoke-longlived-or-shortlived-channel-access-token)|RevokeShortLongLivedChannelAccessTokenAsync|✔|
-
-## 2-2. LineMessagingClient class
+## 2-1. LineMessagingClient class
 각 기능 별로 개별 class들이 아래와 같이 존재합니다. 하지만 LineMessagingClient를 통해 
 아래의 모든 기능들을 사용 할 수 있으며 LineMessagingClient를 통해 구현하는 것을 권장합니다.
 
@@ -63,7 +34,7 @@ using (var client = new LineChannelAccessTokenClient())
         await client.RichMenu.DownloadRichMenuImageAsync("test richmenu id", @"c:\temp\test.jpg");
     }
     ```
-### 2-2-1. LineMessageClient class
+### 2-1-1. LineMessageClient class
 * [Message](https://developers.line.biz/en/reference/messaging-api/#messages)
 
 |LINE Developers|Methods|Tested|
@@ -87,7 +58,7 @@ using (var client = new LineChannelAccessTokenClient())
 |[Get number of units used this month](https://developers.line.biz/en/reference/messaging-api/#get-number-of-units-used-this-month)|GetNumberOfUnitsUsedThisMonthAsync|✔|
 |[Get name list of units used this month](https://developers.line.biz/en/reference/messaging-api/#get-name-list-of-units-used-this-month)|GetNameListOfUnitsUsedThisMonthAsync|✔|
 
-### 2-2-2. LineInsightClient class
+### 2-1-2. LineInsightClient class
 * [Insight](https://developers.line.biz/en/reference/messaging-api/#get-insight)
 
 |LINE Developers|Methods|Tested|
@@ -98,7 +69,7 @@ using (var client = new LineChannelAccessTokenClient())
 |[Get user interaction statistics](https://developers.line.biz/en/reference/messaging-api/#get-message-event)|GetUserInteractionStatisticsAsync|✔|
 |[Get statistics per unit](https://developers.line.biz/en/reference/messaging-api/#get-statistics-per-unit)|GetStatisticsPerUnitAsync|✔|
 
-### 2-2-3. LineRichMenuClient class
+### 2-1-3. LineRichMenuClient class
 * [Rich menu](https://developers.line.biz/en/reference/messaging-api/#rich-menu)
 
 |LINE Developers|Methods|Tested|
@@ -127,7 +98,7 @@ using (var client = new LineChannelAccessTokenClient())
 |[Get the status of rich menu batch control](https://developers.line.biz/en/reference/messaging-api/#get-batch-control-rich-menus-progress-status)|GetStatusOfRichMenuBatchControlAsync|❌|
 |[Validate a request of rich menu batch control](https://developers.line.biz/en/reference/messaging-api/#validate-batch-control-rich-menus-request)|ValidateRequestOfRichMenuBatchControlAsync|✔|
 
-### 2-2-4. LineGroupChatClient class
+### 2-1-4. LineGroupChatClient class
 * [GroupChat](https://developers.line.biz/en/reference/messaging-api/#group)
 
 |LINE Developers|Methods|Tested|
@@ -138,7 +109,7 @@ using (var client = new LineChannelAccessTokenClient())
 |[Get group chat member profile](https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile)|GetChatMemberProfileAsync|✔|
 |[Leave group chat](https://developers.line.biz/en/reference/messaging-api/#leave-group)|LeaveAsync|✔|
 
-### 2-2-5. LineMultiPersonChatClient class
+### 2-1-5. LineMultiPersonChatClient class
 * [MultiPersonChat](https://developers.line.biz/en/reference/messaging-api/#chat-room)
 
 |LINE Developers|Methods|Tested|
@@ -148,7 +119,7 @@ using (var client = new LineChannelAccessTokenClient())
 |[Get multi-person chat member profile](https://developers.line.biz/en/reference/messaging-api/#get-room-member-profile)|GetMemberProfileAsync|❌|
 |[Leave multi-person chat](https://developers.line.biz/en/reference/messaging-api/#leave-room)|LeaveAsync|❌|
 
-### 2-2-6. LineUserClient class
+### 2-1-6. LineUserClient class
 * [Users](https://developers.line.biz/en/reference/messaging-api/#users)
 
 |LINE Developers|Methods|Tested|
@@ -156,14 +127,14 @@ using (var client = new LineChannelAccessTokenClient())
 |[Get profile](https://developers.line.biz/en/reference/messaging-api/#get-profile)|GetUserProfileAsync|✔|
 |[Get a list of users who added your LINE Official Account as a friend](https://developers.line.biz/en/reference/messaging-api/#get-follower-ids)|GetFollowersAsync|❌|
 
-## 2-2-7. LineAccountLinkClient class
+## 2-1-7. LineAccountLinkClient class
 * [Account link](https://developers.line.biz/en/reference/messaging-api/#account-link)
 
 |LINE Developers|Methods|Tested|
 |---|---|---|
 |[Issue link token](https://developers.line.biz/en/reference/messaging-api/#issue-link-token)|IssueLinkTokenAsync|✔|
 
-## 2-2-8. LineWebhookSettingClient class
+## 2-1-8. LineWebhookSettingClient class
 * [Webhook settings](https://developers.line.biz/en/reference/messaging-api/#webhook-settings)
 
 |LINE Developers|Methods|Tested|
@@ -172,12 +143,44 @@ using (var client = new LineChannelAccessTokenClient())
 |[Get webhook endpoint information](https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information)|GetEndpointInformationAsync|✔|
 |[Test webhook endpoint](https://developers.line.biz/en/reference/messaging-api/#test-webhook-endpoint)|TestEndpointAsync|✔|
 
-## 2-2-9. LineBotClient class
+## 2-1-9. LineBotClient class
 * [Bot](https://developers.line.biz/en/reference/messaging-api/#bot)
 
 |LINE Developers|Methods|Tested|
 |---|---|---|
 |[Get bot info](https://developers.line.biz/en/reference/messaging-api/#get-bot-info)|GetBotInformationAsync|✔|
+
+## 2-1. LineChannelAccessTokenClient class
+* [Channel access token](https://developers.line.biz/en/reference/messaging-api/#channel-access-token)
+
+```csharp
+using Line;
+
+using (var client = new LineChannelAccessTokenClient())
+{
+    try
+    {
+        var result = await client.IssueShortLivedChannelAccessTokenAsync("client id", "secret");
+
+        await client.VerifyShortLonglivedChannelAccessTokenAsync(result.AccessToken);
+    }
+    catch (LineCredentialException ex)
+    {
+        Console.WriteLine($"error : {ex.Message}");
+        Console.WriteLine($"error_description : {ex.Detail}");
+    }
+}
+```
+
+|LINE Developers|Methods|Tested|
+|---|---|---|
+|[Issue channel access token v2.1](https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token-v2-1)|IssueChannelAccessTokenAsync|❌|
+|[Verify the validity of the channel access token v2.1](https://developers.line.biz/en/reference/messaging-api/#verfiy-channel-access-token-v2-1)|VerifyChannelAccessTokenAsync|❌|
+|[Get all valid channel access token key IDs v2.1](https://developers.line.biz/en/reference/messaging-api/#get-all-valid-channel-access-token-key-ids-v2-1)|GetAllValidChannelAccessTokenKeyIDsAsync|❌|
+|[Revoke channel access token v2.1](https://developers.line.biz/en/reference/messaging-api/#revoke-channel-access-token-v2-1)|RevokeChannelAccessTokenAsync|❌|
+|[Issue short-lived channel access token](https://developers.line.biz/en/reference/messaging-api/#issue-shortlived-channel-access-token)|IssueShortLivedChannelAccessTokenAsync|✔|
+|[Verify the validity of short-lived and long-lived channel access tokens](https://developers.line.biz/en/reference/messaging-api/#verfiy-channel-access-token)|VerifyShortLonglivedChannelAccessTokenAsync|✔|
+|[Revoke short-lived or long-lived channel access token](https://developers.line.biz/en/reference/messaging-api/#revoke-longlived-or-shortlived-channel-access-token)|RevokeShortLongLivedChannelAccessTokenAsync|✔|
 
 ## 2-3 LineLiffClient class
 * [LIFF Server API](https://developers.line.biz/en/reference/liff-server/)

@@ -45,6 +45,13 @@ namespace Line.Message
         /// <param name="getResponseHeaders">Response Headers</param>
         /// <returns></returns>
         public Task<GroupChatMemberProfile> GetChatMemberProfileAsync(string groupId, string userId, Action<HttpResponseHeaders>? getResponseHeaders = null);
+
+        /// <summary>
+        /// Leaves a group chat.
+        /// </summary>
+        /// <param name="groupId">Group ID.</param>
+        /// <param name="getResponseHeaders">Response Headers</param>
+        /// <returns></returns>
         public Task LeaveAsync(string groupId, Action<HttpResponseHeaders>? getResponseHeaders = null);
     }
 }

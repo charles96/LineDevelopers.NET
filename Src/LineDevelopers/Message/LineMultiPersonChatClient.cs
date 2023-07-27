@@ -59,7 +59,7 @@ namespace Line.Message
         /// <summary>
         /// leave multi person chat
         /// </summary>
-        /// <param name="roomId"></param>
+        /// <param name="roomId">Room ID</param>
         /// <returns></returns>
         public async Task LeaveAsync(string roomId, Action<HttpResponseHeaders>? getResponseHeaders = null)
             => await base.PostAsync($"v2/bot/room/{roomId}/leave", getResponseHeaders).ConfigureAwait(false);

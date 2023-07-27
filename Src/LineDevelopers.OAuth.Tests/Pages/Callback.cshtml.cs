@@ -17,7 +17,7 @@ namespace LineDevelopers.OAuth.Tests.Pages
                 var code = Request.Query["code"];
 
                 var issued = await client.OAuth2dot1.IssueAccessTokenAsync(code,
-                                    HttpUtility.HtmlEncode("https://2100-175-113-116-30.ngrok-free.app/Callback"),
+                                    HttpUtility.HtmlEncode("https://5db2-175-113-116-30.ngrok-free.app/Callback"),
                                     clientId,
                                     secret);
 

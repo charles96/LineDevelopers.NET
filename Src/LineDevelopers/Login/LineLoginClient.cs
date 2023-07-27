@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Net.Http.Headers;
+using System.Text.Json.Nodes;
 
 namespace Line.Login
 {
@@ -23,17 +24,17 @@ namespace Line.Login
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        public async Task<UserProfile> GetUserProfileAsync(string accessToken)
-            => await base.GetAsync<UserProfile>("v2/profile", "Authorization", $"Bearer {accessToken}").ConfigureAwait(false);
+        public async Task<UserProfile> GetUserProfileAsync(string accessToken, Action<HttpResponseHeaders>? getResponseHeaders = null)
+            => await base.GetAsync<UserProfile>("v2/profile", "Authorization", $"Bearer {accessToken}", getResponseHeaders).ConfigureAwait(false);
 
         /// <summary>
         /// Gets the friendship status between a user and the LINE Official Account linked to your LINE Login channel.
         /// </summary>
         /// <param name="accessToken">access token</param>
         /// <returns></returns>
-        public async Task<bool> GetFriendshipStatusAsync(string accessToken)
+        public async Task<bool> GetFriendshipStatusAsync(string accessToken, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
-            var result = await base.GetAsync<JsonNode>("friendship/v1/status", "Authorization", $"Bearer {accessToken}").ConfigureAwait(false);
+            var result = await base.GetAsync<JsonNode>("friendship/v1/status", "Authorization", $"Bearer {accessToken}", getResponseHeaders).ConfigureAwait(false);
 
             return result["friendFlag"].GetValue<bool>();
         }

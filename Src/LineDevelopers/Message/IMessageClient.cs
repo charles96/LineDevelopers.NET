@@ -9,7 +9,10 @@ namespace Line.Message
         /// </summary>
         /// <param name="replyToken">Reply token received via webhook</param>
         /// <param name="message">Messages to send</param>
-        /// <param name="notificationDisabled"></param>
+        /// <param name="notificationDisabled">
+        /// true: The user doesn't receive a push notification when the message is sent.
+        /// false: The user receives a push notification when the message is sent(unless they have disabled push notifications in LINE and/or their device).
+        /// </param>
         /// <param name="getResponseHeaders">Response Headers</param>
         /// <returns></returns>
         public Task SendReplyMessageAsync(string replyToken, IMessage message, bool? notificationDisabled = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
@@ -192,6 +195,7 @@ namespace Line.Message
         /// <param name="date">Date the messages were sent</param>
         /// <param name="getResponseHeaders">Response Headers</param>
         /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
         public Task<NumberOfSentMessages> GetNumberOfSentMessagesAsync(SendType sendType, DateOnly date, Action<HttpResponseHeaders>? getResponseHeaders = null);
 
         /// <summary>

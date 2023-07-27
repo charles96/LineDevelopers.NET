@@ -51,11 +51,9 @@ namespace Line.Message
         /// <summary>
         /// You can check the per-unit statistics of how users interact with push messages and multicast messages sent from your LINE Official Account.
         /// </summary>
-        /// <param name="customAggregationUnit">
-        /// Name of aggregation unit specified when sending the message. Case-sensitive. For example, Promotion_a and Promotion_A are regarded as different unit names.
-        /// </param>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
+        /// <param name="customAggregationUnit">Name of aggregation unit specified when sending the message. Case-sensitive. For example, Promotion_a and Promotion_A are regarded as different unit names.</param>
+        /// <param name="from">Start date of aggregation period.</param>
+        /// <param name="to">End date of aggregation period.</param>
         /// <returns></returns>
         public async Task<StatisticsPerUnit> GetStatisticsPerUnitAsync(string customAggregationUnit, DateOnly from, DateOnly to, Action<HttpResponseHeaders>? getResponseHeaders = null)
             => await base.GetAsync<StatisticsPerUnit>($"v2/bot/insight/message/event/aggregation?customAggregationUnit={customAggregationUnit}&from={from.ToString("yyyyMMdd")}&to={to.ToString("yyyyMMdd")}", getResponseHeaders).ConfigureAwait(false);

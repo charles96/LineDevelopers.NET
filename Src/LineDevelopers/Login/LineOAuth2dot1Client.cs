@@ -16,7 +16,6 @@ namespace Line.Login
         protected override async Task EnsureSuccessStatusCodeAsync(HttpResponseMessage? httpResponseMessage)
             => await httpResponseMessage.EnsureSuccessStatusCodeForLineCredentialAsync().ConfigureAwait(false);
 
-
         /// <summary>
         /// Issues access tokens.
         /// </summary>

@@ -6,11 +6,46 @@ using Line.Message;
 var json = File.ReadAllText(@"c:\temp\test.json");
 var config = JsonSerializer.Deserialize<TestConfig>(json);
 
+using (var client = new LineMessagingClient("your channelacesstoken"))
+{
+    await client.Message.SendPushMessageAsync("user id", new TextMessage("hello world"));
+}
+
+
+using (var client = new LineMessagingClient("your channelacesstoken"))
+{
+    await client.Message.SendPushMessageAsync("user id", new TextMessage("hello world"), 
+        xLineRetryKey: Guid.NewGuid().ToString());
+}
+
+using (var client = new LineMessagingClient("your channelacesstoken"))
+{
+    await client.Message.SendPushMessageAsync("user id", new TextMessage("hello world"),
+        xLineRetryKey: Guid.NewGuid().ToString(), 
+        getResponseHeaders: (o) =>
+        {
+            IEnumerable<string> xLineRequestId;
+            IEnumerable<string> xLineAcceptedRequestId;
+
+            if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+            {
+                Console.WriteLine(xLineRequestId.First());
+            }
+
+            if (o.TryGetValues("X-Line-Accepted-Request-Id", out xLineAcceptedRequestId))
+            {
+                Console.WriteLine(xLineAcceptedRequestId.First());
+            }
+        });
+}
+
+
+
 
 using (var test = new LineMessagingClient(config.ChannelAccessToken))
 {
-    await test.Message.SendBroadcastMessageAsync(new TextMessage("fdasfds"), 
-        getResponseHeaders:(o) => 
+    await test.Message.SendPushMessageAsync("", new TextMessage("fdasfds"),
+        getResponseHeaders: (o) =>
         {
             IEnumerable<string> xLineRequestId;
             IEnumerable<string> xLineAcceptedRequestId;

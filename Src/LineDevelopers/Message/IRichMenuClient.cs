@@ -50,6 +50,7 @@ namespace Line.Message
         /// <param name="mediaType">image type</param>
         /// <param name="getResponseHeaders">Response Headers</param>
         /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
         public Task UploadRichMenuImageAsync(string richMenuId, string path, MediaType mediaType, Action<HttpResponseHeaders>? getResponseHeaders = null);
 
         /// <summary>
@@ -127,7 +128,6 @@ namespace Line.Message
         /// Deletes rich menu alias.
         /// </summary>
         /// <param name="richMenuAliasId">Rich menu alias ID that you want to delete.</param>
-        /// <param name="getResponseHeaders"></param>
         /// <param name="getResponseHeaders">Response Headers</param>
         public Task DeleteRichMenuAliasAsync(string richMenuAliasId, Action<HttpResponseHeaders>? getResponseHeaders = null);
 
@@ -232,7 +232,7 @@ namespace Line.Message
         /// Key for retry. 
         /// Key value is a string matching the regular expression pattern [0-9a-zA-Z\-_]{1,100}.
         /// </param>
-        /// <param name="getResponseHeaders"></param>
+        /// <param name="getResponseHeaders">Response Headers</param>
         /// <returns></returns>
         public Task ValidateRequestOfRichMenuBatchControlAsync(IList<RichMenuOperationObject> richMenuOperationObjects, string? resumeRequestKey = null, Action<HttpResponseHeaders>? getResponseHeaders = null);
     }
