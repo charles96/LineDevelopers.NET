@@ -77,18 +77,6 @@ namespace LineDevelopers.Webhook.Tests.Controllers
 
         protected override async Task OnMessageEventAsync(MessageEventObject messageEventObject)
         {
-            string key = "";
-
-            await SomeOtherMethod("ddd", "ddd");
-
-
-            await SomeOtherMethod("ddd", "ddd", (o) => {
-                key = o;
-            });
-
-            var aaa = key;
-
-
             IMessage message;
 
             switch (messageEventObject.Message)
@@ -96,6 +84,7 @@ namespace LineDevelopers.Webhook.Tests.Controllers
                 case TextObject:
                     var text = (TextObject)messageEventObject.Message;
                     message = new TextMessage(text.Text);
+
                     break;
                 case StickerObject:
                     var sticker = (StickerObject)messageEventObject.Message;

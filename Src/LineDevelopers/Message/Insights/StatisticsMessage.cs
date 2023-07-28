@@ -5,24 +5,49 @@ namespace Line.Message
     public class StatisticsMessage
     {
         [JsonPropertyName("seq")]
-        public int seq { get; set; }
+        public int Seq { get; set; }
 
         [JsonPropertyName("impression")]
-        public int impression { get; set; }
+        public int Impression { get; set; }
 
         [JsonPropertyName("mediaPlayed")]
-        public int mediaPlayed { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? MediaPlayed { get; set; }
 
         [JsonPropertyName("mediaPlayed25Percent")]
-        public int mediaPlayed25Percent { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? MediaPlayed25Percent { get; set; }
 
         [JsonPropertyName("mediaPlayed50Percent")]
-        public int mediaPlayed50Percent { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? MediaPlayed50Percent { get; set; }
 
         [JsonPropertyName("mediaPlayed75Percent")]
-        public int mediaPlayed75Percent { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? MediaPlayed75Percent { get; set; }
 
         [JsonPropertyName("mediaPlayed100Percent")]
-        public int mediaPlayed100Percent { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? MediaPlayed100Percent { get; set; }
+
+        [JsonPropertyName("uniqueMediaPlayed")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? UniqueMediaPlayed { get; set; }
+
+        [JsonPropertyName("uniqueMediaPlayed25Percent")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? UniqueMediaPlayed25Percent { get; set; }
+
+        [JsonPropertyName("uniqueMediaPlayed50Percent")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? UniqueMediaPlayed50Percent { get; set; }
+
+        [JsonPropertyName("uniqueMediaPlayed75Percent")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? UniqueMediaPlayed75Percent { get; set; }
+
+        [JsonPropertyName("uniqueMediaPlayed100Percent")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? UniqueMediaPlayed100Percent { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
 using Line;
 using Line.Login;
 using Line.Message;
@@ -6,61 +7,82 @@ using Line.Message;
 var json = File.ReadAllText(@"c:\temp\test.json");
 var config = JsonSerializer.Deserialize<TestConfig>(json);
 
-using (var client = new LineMessagingClient("your channelacesstoken"))
+
+using (var client = new LineMessagingClient(config.ChannelAccessToken))
 {
-    await client.Message.SendPushMessageAsync("user id", new TextMessage("hello world"));
+    string requestId = String.Empty;
+
+    var messages = new List<IMessage>()
+    {
+        new TextMessage("first"),
+        new StickerMessage("6632","11825375")
+        { 
+            QuickReply = new QuickReply()
+            {
+                    Items = new List<QuickReplyButtonObject>()
+                    {
+                        new QuickReplyButtonObject()
+                        {
+                            Action = new UriAction()
+                            {
+                                Label = "test label",
+                                Uri = "http://lunasoft.co.kr"
+                            }
+                        }
+                    }
+            }
+        }
+    };
+
+    await client.Message.SendBroadcastMessageAsync(messages,
+            getResponseHeaders: async (o) =>
+            {
+                IEnumerable<string> xLineRequestId;
+
+                if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                {
+                    requestId = xLineRequestId.First();
+
+                    Console.WriteLine(requestId);
+                }
+            });
+
+    try
+    {
+        await Task.Delay(60000);
+
+        var result = await client.Insight.GetUserInteractionStatisticsAsync(requestId);
+
+        Console.WriteLine(result.Overview.RequestId);
+
+    }
+    catch (LineException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
 }
 
 
-using (var client = new LineMessagingClient("your channelacesstoken"))
-{
-    await client.Message.SendPushMessageAsync("user id", new TextMessage("hello world"), 
-        xLineRetryKey: Guid.NewGuid().ToString());
-}
 
-using (var client = new LineMessagingClient("your channelacesstoken"))
-{
-    await client.Message.SendPushMessageAsync("user id", new TextMessage("hello world"),
-        xLineRetryKey: Guid.NewGuid().ToString(), 
-        getResponseHeaders: (o) =>
-        {
-            IEnumerable<string> xLineRequestId;
-            IEnumerable<string> xLineAcceptedRequestId;
+//using (var test = new LineMessagingClient(config.ChannelAccessToken))
+//{
+//    await test.Message.SendPushMessageAsync("", new TextMessage("fdasfds"),
+//        getResponseHeaders: (o) =>
+//        {
+//            IEnumerable<string> xLineRequestId;
+//            IEnumerable<string> xLineAcceptedRequestId;
 
-            if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
-            {
-                Console.WriteLine(xLineRequestId.First());
-            }
+//            if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+//            {
+//                Console.WriteLine(xLineRequestId.First());
+//            }
 
-            if (o.TryGetValues("X-Line-Accepted-Request-Id", out xLineAcceptedRequestId))
-            {
-                Console.WriteLine(xLineAcceptedRequestId.First());
-            }
-        });
-}
-
-
-
-
-using (var test = new LineMessagingClient(config.ChannelAccessToken))
-{
-    await test.Message.SendPushMessageAsync("", new TextMessage("fdasfds"),
-        getResponseHeaders: (o) =>
-        {
-            IEnumerable<string> xLineRequestId;
-            IEnumerable<string> xLineAcceptedRequestId;
-
-            if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
-            {
-                Console.WriteLine(xLineRequestId.First());
-            }
-
-            if (o.TryGetValues("X-Line-Accepted-Request-Id", out xLineAcceptedRequestId))
-            {
-                Console.WriteLine(xLineAcceptedRequestId.First());
-            }
-        });
-}
+//            if (o.TryGetValues("X-Line-Accepted-Request-Id", out xLineAcceptedRequestId))
+//            {
+//                Console.WriteLine(xLineAcceptedRequestId.First());
+//            }
+//        });
+//}
 
 
 

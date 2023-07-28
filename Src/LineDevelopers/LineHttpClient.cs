@@ -16,6 +16,7 @@ namespace Line
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://api.line.me/");
+            _httpClient.DefaultRequestVersion = new Version(2, 0);
             _httpClient.Timeout = TimeSpan.FromSeconds(timeout);
 
             _jsonSerializerOptions = new JsonSerializerOptions();
@@ -70,6 +71,7 @@ namespace Line
 
             using (var request = new HttpRequestMessage(HttpMethod.Get, endpoint))
             {
+                request.Version = new Version(2, 0);
                 request.Content = httpContent;
 
                 using (var response = await _httpClient.SendAsync(request).ConfigureAwait(false))
@@ -87,11 +89,13 @@ namespace Line
         {
             TResult result;
 
-            using (var body = new HttpRequestMessage(HttpMethod.Get, endpoint))
+            using (var request = new HttpRequestMessage(HttpMethod.Get, endpoint))
             {
-                if (!String.IsNullOrWhiteSpace(headerName)) body.Headers.Add(headerName, headerValue);
+                request.Version = new Version(2, 0);
 
-                using (var response = await _httpClient.SendAsync(body).ConfigureAwait(false))
+                if (!String.IsNullOrWhiteSpace(headerName)) request.Headers.Add(headerName, headerValue);
+
+                using (var response = await _httpClient.SendAsync(request).ConfigureAwait(false))
                 {
                     GetHeaders(response, getResponseHeaders);
                     await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
@@ -111,12 +115,24 @@ namespace Line
             return await response.Content?.ReadAsStreamAsync();
         }
 
+        protected async Task<Stream> GetStreamAsync(string endpoint, Action<HttpContentHeaders,HttpResponseHeaders>? getResponseHeaders = null)
+        {
+            var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
+
+            if (getResponseHeaders != null) getResponseHeaders(response.Content.Headers, response.Headers);
+
+            await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
+
+            return await response.Content?.ReadAsStreamAsync();
+        }
+
         protected async Task PostAsync(string endpoint, StreamContent streamContent, MediaType mediaType, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var request = new HttpRequestMessage(HttpMethod.Post, endpoint))
             {
                 streamContent.Headers.Add("Content-Type", mediaType == MediaType.Jpg ? "image/jpeg" : "image/png");
-               
+                
+                request.Version = new Version(2, 0);
                 request.Content = streamContent;
 
                 using (var response = await _httpClient.SendAsync(request).ConfigureAwait(false))
@@ -177,7 +193,9 @@ namespace Line
             using (var body = new HttpRequestMessage(HttpMethod.Post, endpoint))
             {
                 var json = JsonSerializer.Serialize<TRequest>(request, _jsonSerializerOptions);
+                
                 body.Content = new StringContent(json, Encoding.UTF8, "application/json");
+                body.Version = new Version(2, 0);
 
                 if (!String.IsNullOrWhiteSpace(headerName)) body.Headers.Add(headerName, headerValue);
 

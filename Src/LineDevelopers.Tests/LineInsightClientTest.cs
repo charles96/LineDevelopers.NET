@@ -19,11 +19,37 @@ namespace LineDevelopers.Tests
         }
 
         [Test]
-        public void GetUserInteractionStatisticsAsyncTest()
+        public void GetUserInteractionStatisticsAsyncErrorTest()
         {
             var ex = ThrowsAsync<LineException>(() => _client.Insight.GetUserInteractionStatisticsAsync("NOT EXISTS REQ ID"));
 
             That("Not Found", Is.EqualTo(ex.Message));
+        }
+
+        [Test]
+        public void GetUserInteractionStatisticsAsyncTest()
+        {
+            DoesNotThrowAsync(async () =>
+            {
+                string requestId = String.Empty;
+
+                await _client.Message.SendBroadcastMessageAsync(new TextMessage("static test"),
+                        getResponseHeaders: async (o) =>
+                        {
+                            IEnumerable<string> xLineRequestId;
+
+                            if (o.TryGetValues("X-Line-Request-Id", out xLineRequestId))
+                            {
+                                requestId = xLineRequestId.First();
+                            }
+                        });
+                
+                await Task.Delay(1000);
+
+                var result = await _client.Insight.GetUserInteractionStatisticsAsync(requestId);
+
+                That(result.Overview.RequestId, Is.EqualTo(requestId));
+            });
         }
 
         [Test]

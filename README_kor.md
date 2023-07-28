@@ -65,9 +65,9 @@ Install-Package LineDevelopers
 |---|---|---|
 |[Get number of message deliveries](https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages)|GetNumberOfMessageDeliveriesAsync|✔|
 |[Get number of followers](https://developers.line.biz/en/reference/messaging-api/#get-number-of-followers)|GetNumberOfFollowersAsync|✔|
-|[Get friend demographics](https://developers.line.biz/en/reference/messaging-api/#get-demographic)|GetFriendsDemographicsAsync|✔|
-|[Get user interaction statistics](https://developers.line.biz/en/reference/messaging-api/#get-message-event)|GetUserInteractionStatisticsAsync|✔|
-|[Get statistics per unit](https://developers.line.biz/en/reference/messaging-api/#get-statistics-per-unit)|GetStatisticsPerUnitAsync|✔|
+|[Get friend demographics](https://developers.line.biz/en/reference/messaging-api/#get-demographic)|GetFriendsDemographicsAsync|❌|
+|[Get user interaction statistics](https://developers.line.biz/en/reference/messaging-api/#get-message-event)|GetUserInteractionStatisticsAsync|❌|
+|[Get statistics per unit](https://developers.line.biz/en/reference/messaging-api/#get-statistics-per-unit)|GetStatisticsPerUnitAsync|❌|
 
 ### 2-1-3. LineRichMenuClient class
 * [Rich menu](https://developers.line.biz/en/reference/messaging-api/#rich-menu)
