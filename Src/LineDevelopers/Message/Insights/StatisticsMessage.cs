@@ -8,7 +8,8 @@ namespace Line.Message
         public int Seq { get; set; }
 
         [JsonPropertyName("impression")]
-        public int Impression { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? Impression { get; set; }
 
         [JsonPropertyName("mediaPlayed")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

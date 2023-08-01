@@ -115,17 +115,6 @@ namespace Line
             return await response.Content?.ReadAsStreamAsync();
         }
 
-        protected async Task<Stream> GetStreamAsync(string endpoint, Action<HttpContentHeaders,HttpResponseHeaders>? getResponseHeaders = null)
-        {
-            var response = await _httpClient.GetAsync(endpoint).ConfigureAwait(false);
-
-            if (getResponseHeaders != null) getResponseHeaders(response.Content.Headers, response.Headers);
-
-            await this.EnsureSuccessStatusCodeAsync(response).ConfigureAwait(false);
-
-            return await response.Content?.ReadAsStreamAsync();
-        }
-
         protected async Task PostAsync(string endpoint, StreamContent streamContent, MediaType mediaType, Action<HttpResponseHeaders>? getResponseHeaders = null)
         {
             using (var request = new HttpRequestMessage(HttpMethod.Post, endpoint))

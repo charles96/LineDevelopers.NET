@@ -44,11 +44,11 @@ namespace LineDevelopers.Tests
                             }
                         });
                 
-                await Task.Delay(1000);
+                await Task.Delay(10000);
 
                 var result = await _client.Insight.GetUserInteractionStatisticsAsync(requestId);
 
-                That(result.Overview.RequestId, Is.EqualTo(requestId));
+                That(result.Overview.RequestId, Is.EqualTo(requestId),$"err : {result.Overview.RequestId} : {requestId}");
             });
         }
 
@@ -57,9 +57,12 @@ namespace LineDevelopers.Tests
         {
             DoesNotThrowAsync(async () =>
             {
-                await _client.Insight.GetStatisticsPerUnitAsync("DUMMY", new DateOnly(2023, 04, 01), new DateOnly(2023, 04, 10));
+                var result = await _client.Insight.GetStatisticsPerUnitAsync("Promotion_TEST", new DateOnly(2023, 7, 31), new DateOnly(2023, 7, 31));
+                
+                That(result.Messages.Count, Is.EqualTo(2));
             });
         }
+
 
         [Test]
         public void GetNumberOfFollowersAsyncTest()
