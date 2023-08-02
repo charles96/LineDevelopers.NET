@@ -7,9 +7,11 @@
 이 라이브러리는 [LINE Developers](https://developers.line.biz/en/docs/)의 API를 C# 라이브러리로 개발한 것이며, LINE Developers와 관련없는 비공식 라이브러리 임을 밝힙니다.
 한국에서는 지원하지 않거나 유료 기반의 기능들은 테스트를 완료하지 못했습니다. 참고하시기 바라며 LINE Messenger 기반 메시지 발송 또는 챗봇을 개발하시는 분들께 도움이 되길 바랍니다.
 
-* install from nuget
+# install from nuget
+v1.1.20부터 LINE API와 HTTP/2로 통신을 합니다.  
+하위 버전에서 1.1.20버전으로 코드 수정없이 업데이트 가능하니 업데이트 권고드립니다.
 ```powershell
-Install-Package LineDevelopers 
+Install-Package LineDevelopers -Version 1.1.20
 ```
 
 # 1. 사용 가이드 문서

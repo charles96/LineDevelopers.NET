@@ -9,9 +9,12 @@ There are so many features in LINE Developers APIs.
 However couldn't test such of features which are not offer in KOREA and some of pay features.
 but It'll works well. I hope it's helpful to develop message send and chatbot via LINE Messenger.
 
-* install from nuget
+# install from nuget
+Since v1.1.20, It communicates based on HTTP/2.0 between LineDevelopers.NET and LINE APIs.  
+And it's not necessary to any migrate(such as code change) for the update.  
+so I strongly recommend to update v1.1.20  
 ```powershell
-Install-Package LineDevelopers 
+Install-Package LineDevelopers -Version 1.1.20 
 ```
 
 # 1. Getting started
