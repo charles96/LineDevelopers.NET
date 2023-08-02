@@ -1,6 +1,6 @@
 ﻿[![dotnet version](https://img.shields.io/badge/.NET-7.x-blue)](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-7)
 [![Nuget](https://img.shields.io/nuget/v/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
-[![Nuget downloads](https://img.shields.io/nuget/dt/LineDevelopers.svg)](https://www.nuget.org/packages/LineDevelopers)
+[![Nuget downloads](https://img.shields.io/nuget/dt/LineDevelopers)](https://www.nuget.org/packages/LineDevelopers)
 * [English](https://github.com/charles96/LineDevelopers.Net/blob/master/README_kor.md)
 
 # LINE Developers.Net
